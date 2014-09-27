@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <files>
+    <file>
+      <guid>uCKEditor.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>uCKEditor.dll</orgName>
+    </file>
+    <file>
+      <guid>package.manifest</guid>
+      <orgPath>/App_Plugins/uCKEditor</orgPath>
+      <orgName>package.manifest</orgName>
+    </file>
+  </files>
+  <info>
+    <package>
+      <name>uCKEditor</name>
+      <version>0.5.0</version>
+      <license url="http://opensource.org/licenses/MIT">MIT License</license>
+      <url>uCKEditor</url>
+      <requirements>
+        <major>7</major>
+        <minor>1</minor>
+        <patch>4</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>uCKEditor</name>
+      <website>-</website>
+    </author>
+    <readme><![CDATA[uCKEditor v0.5.0 requires Umbraco v7.1.4 or above]]></readme>
+  </info>
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes>
+    <DataType Name="uCKEditor" Id="uCKEditor" Definition="5049324d-46e3-4c4d-aab0-389093b88ec8" DatabaseType="Ntext">
+      <PreValues>
+      </PreValues>
+    </DataType>
+  </DataTypes>
+  <Actions>
+  </Actions>
+</umbPackage>

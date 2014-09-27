@@ -1,0 +1,81 @@
+﻿{
+	propertyEditors:[
+		{
+			name: 'uCKEditor',
+			alias: 'uCKEditor',
+			editor:{
+				view: '~/App_Plugins/uCKEditor/editor.html',
+				hideLabel: false,
+				valueType: "TEXT",
+				validation: {},
+				isReadOnly: false 
+			},
+			prevalues: {
+				fields: [
+					{
+					   label: "Hide label",
+					   description: "Hide the label on the left hand side",
+					   key: "hideLabel",
+					   view: "boolean"
+					},
+					{
+					   label: "Custom configuration file",
+					   description: "Custom configuration file path (e.g. /config/ckeditor_config.js) IMPORTANT: When this setting is set, all settings below are ignored! ",
+					   key: "customConfigurationFile",
+					   view: "textstring"
+					},
+					{
+					   label: "Width",
+					   description: "",
+					   key: "width",
+					   view: "number"
+					},
+					{
+					   label: "Height",
+					   description: "",
+					   key: "height",
+					   view: "number"
+					},
+					{
+					   label: "Toolbar Groups",
+					   description: "See official CKEditor documentation. (Leaving this property empty, the CKEditor default value will be used)",
+					   key: "toolbarGroups",
+					   view: "textarea"
+					}   
+				]
+			},
+			defaultConfig: {
+				hideLabel: true,
+				customConfigurationFile: "",
+				width: "",
+				height: 500,
+				toolbarGroups: 
+"{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
+{ name: 'forms' },
+'/',
+{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+{ name: 'links' },
+{ name: 'insert' },
+'/',
+{ name: 'styles' },
+{ name: 'colors' },
+{ name: 'tools' },
+{ name: 'others' },
+{ name: 'about' }"
+			}
+		}
+	],
+
+    javascript: [
+		'~/App_Plugins/uCKEditor/uCKEditor.resource.js',
+		'~/App_Plugins/uCKEditor/uCKEditor.controller.js'
+    ],
+
+    css: [
+		'~/App_Plugins/uCKEditor/uCKEditor.editor.css'
+    ]
+
+}
