@@ -1,8 +1,6 @@
-﻿'use strict';
-(function () {
-
-    // Create the controller
-    function uCKEditorController($scope, assetsService, $log) {
+﻿angular.module("umbraco")
+.controller("uCKEditor.uCKEditorController",
+function ($scope, assetsService, dialogService, $log) {
 
         // Check whether the property editor's label should be hidden
         if ($scope.model.config.hideLabel == 1) {
@@ -11,20 +9,27 @@
 
         // Tell the assetsService to load files required for the editor
         assetsService
-            .load([
+        .loadJs([
             '/App_Plugins/uCKEditor/CKEditor/ckeditor.js',
-            '/App_Plugins/uCKEditor/CKEditor/config.js',
-            '/App_Plugins/uCKEditor/CKEditor/lang/en.js',
-            '/App_Plugins/uCKEditor/CKEditor/styles.js',
-            '/App_Plugins/uCKEditor/CKEditor/plugins/image/dialogs/image.js'
             ])
             .then(function () {
 
-                // This will be executed when all dependencies have loaded
+                // Textaread ID used by the editor
+            var editorTextAreaId = 'editor';
+
+            // Assign a UniqueId for the textarea (in case there is more than one editor in the same form)
+            var date = new Date();
+            var uniqueID = "" + date.getDate() + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds();
+            $('#' + editorTextAreaId).attr("id", uniqueID);
+            editorTextAreaId = uniqueID;
+
+                // Create the CKEditor control
                 var editor;
-                if ($scope.model.config.customConfigurationFile != null && jQuery.trim($scope.model.config.customConfigurationFile) != "") {
+            // Loads plugins to insert images from the Umbraco Media Library and to save changes 
+                CKEDITOR.config.extraPlugins = 'umbracomedia,umbracosave';
+                if ($scope.model.config.customConfigurationFile != null && jQuery.trim($scope.model.config.customConfigurationFile) != '') {
                     // Create the editor using the custom configuration file
-                    editor = CKEDITOR.replace('ContentText_' + $scope.model.alias, {
+                    editor = CKEDITOR.replace(editorTextAreaId, {
                         customConfig: $scope.model.config.customConfigurationFile
                     });
                 }
@@ -32,30 +37,98 @@
                     // Create the editor using the other setting
                     CKEDITOR.config.width = $scope.model.config.width;
                     CKEDITOR.config.height = $scope.model.config.height;
-                    if ($scope.model.config.toolbarGroups != null && jQuery.trim($scope.model.config.toolbarGroups) != "") {
-                        CKEDITOR.config.toolbarGroups = eval("[" + $scope.model.config.toolbarGroups + "]");
+                    CKEDITOR.config.language = $scope.model.config.language;
+                    if ($scope.model.config.toolbarGroups != null && jQuery.trim($scope.model.config.toolbarGroups) != '') {
+                        CKEDITOR.config.toolbarGroups = eval('[' + $scope.model.config.toolbarGroups + ',]');
                     }
-                    // Create the editor
-                    editor = CKEDITOR.replace('ContentText_' + $scope.model.alias, CKEDITOR.config);
+                    if ($scope.model.config.toolbar != null && jQuery.trim($scope.model.config.toolbar) != '') {
+                        CKEDITOR.config.toolbar = eval('[' + $scope.model.config.toolbar + ',]');
+                    }
+                    editor = CKEDITOR.replace(editorTextAreaId, CKEDITOR.config);
                 }
 
-                // Set editor's value when loading
+                // Get the internal texteditor ID 
+            var editorId = 'cke_' + editorTextAreaId;
+
+                // Get UmbracoMedia plugin's button IDs
+                var editorButtonMediaIdSelector = '#' + editorId + ' .cke_button__umbracomedia';
+                var editorButtonMediaIconIdSelector = editorButtonMediaIdSelector + '_icon';
+
+                // Set the UmbracoMedia plugin's button icon using css since it is not loading it properly (because CKEditor is integrated in Umbraco??)
+                editor.on('instanceReady', function (event) {
+                    var editor = event.editor;
+                    $(editorButtonMediaIconIdSelector).css('background-image', 'url(/App_Plugins/uCKEditor/CKEditor/plugins/umbracomedia/icons/umbracomedia.png)');
+                });
+
+                // Hook the click event for the UmbracoMedia plugin's button
+                $(document).on('click', editorButtonMediaIdSelector, function () {
+
+                    // Open Umbraco's media picker dialog
+                    dialogService.mediaPicker({
+                        // Media picker dialog settings
+                        onlyImages: true,
+                        showDetails: true,
+
+                        // Media picker callback
+                        callback: function (data) {
+
+                            // Check whether an image has been selected
+                            if (data) {
+
+                                // Selected image
+                                var selectedImage = {
+                                    alt: data.altText,
+                                    src: (data.url) ? data.url : '/App_Plugins/uCKEditor/CKEditor/plugins/umbracomedia/images/noimage.png',
+                                    rel: data.id
+                                };
+
+                                // Create an html img tag with the picked image properties to insert into the editor
+                                var htmlImage = editor.document.createElement('img');
+                                htmlImage.setAttribute('src', selectedImage.src);
+                                htmlImage.setAttribute('alt', selectedImage.alt);
+                                editor.insertElement(htmlImage)
+                            };
+                        }
+                    });
+
+                });
+
+                // Get UmbracoSave plugin's button IDs
+                var editorButtonSaveIdSelector = '#' + editorId + ' .cke_button__umbracosave';
+                var editorButtonSaveIconIdSelector = editorButtonSaveIdSelector + '_icon';
+
+                // Set the UmbracoSave plugin's button icon using css since it is not loading it properly (because CKEditor is integrated in Umbraco??)
+                editor.on('instanceReady', function (event) {
+                    var editor = event.editor;
+                    $(editorButtonSaveIconIdSelector).css('background-Icon', 'url(/App_Plugins/uCKEditor/CKEditor/plugins/umbracosave/icons/umbracosave.png)');
+                });
+
+                // Hook the click event for the UmbracoSave plugin's button
+                $(document).on('click', editorButtonSaveIdSelector, function () {
+                    alert('Saved successfully');
+                });
+
+                // Set editor's value (when loading)
                 editor.setData($scope.model.value);
 
-                // Save editor's value when submitting
+                // Save editor's value (when submitting)
                 $scope.$on("formSubmitting", function (ev, args) {
                     $scope.model.value = editor.getData();
                 });
 
+                // Hook the destroy event in order to destroy the CKEditor instances
+                $scope.$on("$destroy", function () {
+                    // Destroy all CKEditors
+                    for (var instanceName in CKEDITOR.instances) {
+                        var instanceEditor = CKEDITOR.instances[instanceName];
+                        if (instanceEditor) {
+                            instanceEditor.destroy(true);
+                            instanceEditor = null;
+                        }
+                    }
+                });
             });
 
         // Load the separate css for the editor to avoid it blocking our js loading
         assetsService.loadCss('/App_Plugins/uCKEditor/CKEditor/skins/moono/editor.css');
-        assetsService.loadCss('/App_Plugins/uCKEditor/CKEditor/skins/moono/editor.css');
-    };
-
-    // Register the controller
-    angular.module("umbraco").controller('uCKEditor.uCKEditorController', uCKEditorController);
-
-})();
-
+});
