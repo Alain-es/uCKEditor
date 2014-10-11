@@ -205,13 +205,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_Plugins\editor.html" />
-    <EmbeddedResource Include="App_Plugins\uCKEditor.controller.js" />
-    <EmbeddedResource Include="App_Plugins\uCKEditor.editor.css" />
+    <EmbeddedResource Include="App_Plugins\**\*.*" />
     <Content Include="packages.config" />
-    <EmbeddedResource Include="App_Plugins\uCKEditor.resource.js" />
-    <EmbeddedResource Include="App_Plugins\package.manifest" />
-    <EmbeddedResource Include="App_Plugins\CKEditor\**\*.*" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -234,8 +229,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Code\Extensions\" />
-    <Folder Include="App_Code\Helpers\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
@@ -283,6 +276,7 @@ REM @XCOPY "$(ProjectDir)\App_Plugins\*.*" "$(SolutionDir)\installer\uCKEditor\A
 
 REM -- Create package's zip file
 "C:\Program Files\7-Zip\7z.exe" a -tzip "$(SolutionDir)\installer\uCKEditor.zip" "$(SolutionDir)\installer\uCKEditor\*.*" -r
+
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
