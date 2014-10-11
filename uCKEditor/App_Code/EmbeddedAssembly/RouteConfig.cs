@@ -77,6 +77,26 @@ namespace uCKEditor.EmbeddedAssembly
                 }
             );
 
+            RouteTable.Routes.MapRoute(
+                name: "GetResourcePath6",
+                url: pluginBasePath + "/{directory1}/{directory2}/{directory3}/{directory4}/{directory5}/{directory6}/{resource}",
+                defaults: new
+                {
+                    controller = "EmbeddedResource",
+                    action = "GetResourcePath6"
+                }
+            );
+
+            RouteTable.Routes.MapRoute(
+                name: "GetResourcePath7",
+                url: "{directory1}/{directory2}/{directory3}/{directory4}/{directory5}/{directory6}/{directory7}/{resource}",
+                defaults: new
+                {
+                    controller = "EmbeddedResource",
+                    action = "GetResourcePath7"
+                }
+            );
+
         }
     }
 }

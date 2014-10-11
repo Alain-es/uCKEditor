@@ -51,6 +51,18 @@ namespace uCKEditor.EmbeddedAssembly
             return GetResource(path, resource);
         }
 
+        public FileStreamResult GetResourcePath6(string directory1, string directory2, string directory3, string directory4, string directory5, string directory6, string resource)
+        {
+            var path = string.Format("/{0}/{1}/{2}/{3}/{4}/{5}/", directory1, directory2, directory3, directory4, directory5, directory6);
+            return GetResource(path, resource);
+        }
+
+        public FileStreamResult GetResourcePath7(string directory1, string directory2, string directory3, string directory4, string directory5, string directory6, string directory7, string resource)
+        {
+            var path = string.Format("/{0}/{1}/{2}/{3}/{4}/{5}/{6}/", directory1, directory2, directory3, directory4, directory5, directory6, directory7);
+            return GetResource(path, resource);
+        }
+
         private FileStreamResult GetResource(string url, string resource)
         {
             try
