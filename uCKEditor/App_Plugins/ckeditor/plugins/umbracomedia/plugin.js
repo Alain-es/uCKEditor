@@ -2,18 +2,19 @@ CKEDITOR.plugins.add('umbracomedia', {
     icons: 'umbracomedia',
     hidpi: true,
     init: function (editor) {
-        editor.addCommand('umbracomedia',
-            new CKEDITOR.dialogCommand('umbracomediaDialog', {
-                allowedContent: 'img[*]',
-                requiredContent: 'img'
-            })
-        );
+        editor.addCommand('umbracomedia', {
+            allowedContent: 'img[*]',
+            requiredContent: 'img',
+            modes: { wysiwyg: 1 },
+            canUndo: true,
+            exec: function (editor) {
+            }
+        });
         editor.ui.addButton('umbracomedia', {
             //label: editor.lang.umbracomedia.tooltip,
             label: "Umbraco media picker",
             command: 'umbracomedia',
-            toolbar: 'insert,0'
+            toolbar: 'umbraco,1'
         });
-        CKEDITOR.dialog.add('umbracomediaDialog', this.path + 'dialogs/umbracomedia.js')
     }
 });

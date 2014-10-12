@@ -19,8 +19,8 @@
 					   view: "boolean"
 					},
 					{
-					   label: "Custom config. file",
-					   description: "Custom configuration file path (e.g. /config/ckeditor_config1.js) IMPORTANT: When this setting is set, all settings below are ignored! ",
+					   label: "CustomConfigurationFile",
+					   description: "Custom configuration file path (e.g. /config/ckeditor_conf1.js) IMPORTANT: When this setting is set, all settings below are ignored!",
 					   key: "customConfigurationFile",
 					   view: "textstring"
 					},
@@ -43,43 +43,84 @@
 					   view: "textstring"
 					},
 					{
+					   label: "Font_names",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "font_names",
+					   view: "textarea"
+					},
+					{
+					   label: "Font_style",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "font_style",
+					   view: "textarea"
+					},
+					{
+					   label: "Format_tags",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "format_tags",
+					   view: "textarea"
+					},
+					{
+					   label: "AllowedContent",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "allowedContent",
+					   view: "textarea"
+					},
+					{
+					   label: "ExtraAllowedContent",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "extraAllowedContent",
+					   view: "textarea"
+					},
+					{
 					   label: "Toolbar",
-					   description: "",
+					   description: "Leave empty to use CKEditor default values.",
 					   key: "toolbar",
 					   view: "textarea"
 					},
 					{
-					   label: "Toolbar Groups",
-					   description: "This setting is ignored when the previous setting <Toolbar> is set",
+					   label: "ToolbarGroups",
+					   description: "This setting is ignored when the previous setting <Toolbar> is set. Leave empty to use CKEditor default values.",
 					   key: "toolbarGroups",
 					   view: "textarea"
 					},
+					{
+					   label: "RemoveButtons",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "removeButtons",
+					   view: "textarea"
+					},
+					{
+					   label: "ExtraPlugins",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "extraPlugins",
+					   view: "textarea"
+					},
+					{
+					   label: "RemovePlugins",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "removePlugins",
+					   view: "textarea"
+					},
+
 				]
 			},
 			defaultConfig: {
-				hideLabel: true,
+				hideLabel: 1,
 				customConfigurationFile: "",
 				width: "",
 				height: 500,
 				language: "en",
-				toolbar: 
-"[ 'umbracomedia', 'umbracosave', 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ], [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ], '/', [ 'Bold', 'Italic' ]",
-				toolbarGroups: 
-"{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
-{ name: 'forms' },
-'/',
-{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-{ name: 'links' },
-{ name: 'insert' },
-'/',
-{ name: 'styles' },
-{ name: 'colors' },
-{ name: 'tools' },
-{ name: 'others' },
-{ name: 'about' }",
+				font_names: "",
+				font_style: "",
+				format_tags: "",
+				allowedContent: "",
+				extraAllowedContent: "",
+				toolbar: "",
+				toolbarGroups: "",
+				removeButtons: "",
+				extraPlugins: "",
+				removePlugins: ""
 			}
 		}
 	],

@@ -226,11 +226,16 @@
     <Compile Include="App_Code\EmbeddedAssembly\RouteConfig.cs" />
     <Compile Include="App_Code\Events\UmbracoStartupEvent.cs" />
     <Compile Include="App_Code\EmbeddedAssembly\EmbeddedResourceController.cs" />
+    <Compile Include="App_Code\Extensions\UserExtensions.cs" />
+    <Compile Include="App_Code\Helpers\InlineEditorHelper.cs" />
+    <Compile Include="App_Code\Helpers\PermissionHelper.cs" />
+    <Compile Include="Controllers\uCKEditorApiController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
+    <Folder Include="App_Plugins\CKEditor\plugins\umbracomedia\icons\hidpi\" />
+    <Folder Include="App_Plugins\CKEditor\plugins\umbracosave\icons\hidpi\" />
     <Folder Include="Models\" />
     <Folder Include="Views\" />
   </ItemGroup>

@@ -20,13 +20,18 @@ function ($scope, assetsService, dialogService, $log) {
             // Assign a UniqueId for the textarea (in case there is more than one editor in the same form)
             var date = new Date();
             var uniqueID = "" + date.getDate() + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds();
-            $('#' + editorTextAreaId).attr("id", uniqueID);
+            $('#' + editorTextAreaId).attr('id', uniqueID);
             editorTextAreaId = uniqueID;
 
             // Create the CKEditor control
             var editor;
-            // Loads plugins to insert images from the Umbraco Media Library and to save changes 
-            CKEDITOR.config.extraPlugins = 'umbracomedia';
+
+            // Loads plugin to insert images from the Umbraco Media Library 
+            if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
+                CKEDITOR.config.plugins += ',umbracomedia';
+            else
+                CKEDITOR.config.plugins = 'umbracomedia';
+
             if ($scope.model.config.customConfigurationFile != null && jQuery.trim($scope.model.config.customConfigurationFile) != '') {
                 // Create the editor using the custom configuration file
                 editor = CKEDITOR.replace(editorTextAreaId, {
@@ -37,14 +42,46 @@ function ($scope, assetsService, dialogService, $log) {
                 // Create the editor using the other setting
                 CKEDITOR.config.width = $scope.model.config.width;
                 CKEDITOR.config.height = $scope.model.config.height;
-                CKEDITOR.config.language = $scope.model.config.language;
-                if ($scope.model.config.toolbarGroups != null && jQuery.trim($scope.model.config.toolbarGroups) != '') {
-                    CKEDITOR.config.toolbarGroups = eval('[' + $scope.model.config.toolbarGroups + ',]');
+                if ($scope.model.config.language != null && jQuery.trim($scope.model.config.language) != '') {
+                    CKEDITOR.config.language = $scope.model.config.language;
+                }
+                if ($scope.model.config.font_names != null && jQuery.trim($scope.model.config.font_names) != '') {
+                    CKEDITOR.config.font_names = $scope.model.config.font_names;
+                }
+                if ($scope.model.config.font_style != null && jQuery.trim($scope.model.config.font_style) != '') {
+                    CKEDITOR.config.font_style = $scope.model.config.font_style;
+                }
+                if ($scope.model.config.format_tags != null && jQuery.trim($scope.model.config.format_tags) != '') {
+                    CKEDITOR.config.format_tags = $scope.model.config.format_tags;
+                }
+                if ($scope.model.config.allowedContent != null && jQuery.trim($scope.model.config.allowedContent) != '') {
+                    CKEDITOR.config.allowedContent = $scope.model.config.allowedContent;
+                }
+                if ($scope.model.config.extraAllowedContent != null && jQuery.trim($scope.model.config.extraAllowedContent) != '') {
+                    CKEDITOR.config.extraAllowedContent = $scope.model.config.extraAllowedContent;
                 }
                 if ($scope.model.config.toolbar != null && jQuery.trim($scope.model.config.toolbar) != '') {
-                    CKEDITOR.config.toolbar = eval('[' + $scope.model.config.toolbar + ',]');
+                    CKEDITOR.config.toolbar = eval("[['umbracomedia'], " + $scope.model.config.toolbar + ",]");
+                }
+                if ($scope.model.config.toolbarGroups != null && jQuery.trim($scope.model.config.toolbarGroups) != '') {
+                    CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + $scope.model.config.toolbarGroups + ",]");
+                }
+                if ($scope.model.config.removeButtons != null && jQuery.trim($scope.model.config.removeButtons) != '') {
+                    CKEDITOR.config.removeButtons = $scope.model.config.removeButtons;
+                }
+                if ($scope.model.config.extraPlugins != null && jQuery.trim($scope.model.config.extraPlugins) != '') {
+                    CKEDITOR.config.extraPlugins = $scope.model.config.extraPlugins;
+                }
+                if ($scope.model.config.removePlugins != null && jQuery.trim($scope.model.config.removePlugins) != '') {
+                    CKEDITOR.config.removePlugins = $scope.model.config.removePlugins;
                 }
                 editor = CKEDITOR.replace(editorTextAreaId, CKEDITOR.config);
+            }
+
+            // If toolbars haven't been customized then add umbraco toolbar group to the default CKEditor toolbar
+            if ((CKEDITOR.config.toolbarGroups == null || CKEDITOR.config.toolbarGroups == 'undefined' || jQuery.trim(CKEDITOR.config.toolbarGroups) == '') &&
+                (CKEDITOR.config.toolbar == null || CKEDITOR.config.toolbar == 'undefined' || jQuery.trim(CKEDITOR.config.toolbar) == '')) {
+                editor.ui.addToolbarGroup('umbraco', 0);
             }
 
             // Get the internal texteditor ID 
