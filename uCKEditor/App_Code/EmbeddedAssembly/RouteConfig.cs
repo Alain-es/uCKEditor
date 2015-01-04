@@ -18,83 +18,91 @@ namespace uCKEditor.EmbeddedAssembly
             string url = string.Empty;
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath0",
+                name: "uCKEditor.GetResourcePath0",
                 url: pluginBasePath + "/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath0"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath1",
+                name: "uCKEditor.GetResourcePath1",
                 url: pluginBasePath + "/{directory1}/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath1"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath2",
+                name: "uCKEditor.GetResourcePath2",
                 url: pluginBasePath + "/{directory1}/{directory2}/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath2"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath3",
+                name: "uCKEditor.GetResourcePath3",
                 url: pluginBasePath + "/{directory1}/{directory2}/{directory3}/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath3"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath4",
+                name: "uCKEditor.GetResourcePath4",
                 url: pluginBasePath + "/{directory1}/{directory2}/{directory3}/{directory4}/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath4"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath5",
+                name: "uCKEditor.GetResourcePath5",
                 url: pluginBasePath + "/{directory1}/{directory2}/{directory3}/{directory4}/{directory5}/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath5"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath6",
+                name: "uCKEditor.GetResourcePath6",
                 url: pluginBasePath + "/{directory1}/{directory2}/{directory3}/{directory4}/{directory5}/{directory6}/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath6"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
             RouteTable.Routes.MapRoute(
-                name: "GetResourcePath7",
+                name: "uCKEditor.GetResourcePath7",
                 url: pluginBasePath + "{directory1}/{directory2}/{directory3}/{directory4}/{directory5}/{directory6}/{directory7}/{resource}",
                 defaults: new
                 {
                     controller = "EmbeddedResource",
                     action = "GetResourcePath7"
-                }
+                },
+                namespaces: new[] { "uCKEditor.EmbeddedAssembly" }
             );
 
         }
