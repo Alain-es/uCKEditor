@@ -28,9 +28,9 @@ function ($scope, assetsService, dialogService, $log) {
 
             // Loads plugin to insert images from the Umbraco Media Library 
             if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
-                CKEDITOR.config.plugins += ',umbracomedia';
+                CKEDITOR.config.plugins += ',umbracomedia,umbracoembed';
             else
-                CKEDITOR.config.plugins = 'umbracomedia';
+                CKEDITOR.config.plugins = 'umbracomedia,umbracoembed';
 
             if ($scope.model.config.customConfigurationFile != null && jQuery.trim($scope.model.config.customConfigurationFile) != '') {
                 // Create the editor using the custom configuration file
@@ -61,7 +61,7 @@ function ($scope, assetsService, dialogService, $log) {
                     CKEDITOR.config.extraAllowedContent = $scope.model.config.extraAllowedContent;
                 }
                 if ($scope.model.config.toolbar != null && jQuery.trim($scope.model.config.toolbar) != '') {
-                    CKEDITOR.config.toolbar = eval("[['umbracomedia'], " + $scope.model.config.toolbar + ",]");
+                    CKEDITOR.config.toolbar = eval("[['umbracomedia,umbracoembed'], " + $scope.model.config.toolbar + ",]");
                 }
                 if ($scope.model.config.toolbarGroups != null && jQuery.trim($scope.model.config.toolbarGroups) != '') {
                     CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + $scope.model.config.toolbarGroups + ",]");
@@ -122,6 +122,32 @@ function ($scope, assetsService, dialogService, $log) {
                 });
 
             });
+
+
+
+            // Get UmbracoEmbed plugin's button IDs
+            var editorButtonEmbedIdSelector = '#' + editorId + ' .cke_button__umbracoembed';
+
+            // Hook the click event for the UmbracoEmbed plugin's button
+            $(document).on('click', editorButtonEmbedIdSelector, function () {
+
+                // Open Umbraco's Embed dialog
+                dialogService.embedDialog({
+
+                    // Embed dialog callback
+                    callback: function (data) {
+
+                        // Insert embed element
+                        if (data) {
+                            var embedElement = CKEDITOR.dom.element.createFromHtml(data, editor.document);
+                            editor.insertElement(embedElement);
+                        };
+                    }
+                });
+
+            });
+
+
 
             // Set editor's value (when loading)
             editor.setData($scope.model.value);
