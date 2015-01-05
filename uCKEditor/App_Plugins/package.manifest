@@ -127,11 +127,13 @@
 
     javascript: [
 		'~/App_Plugins/uCKEditor/uCKEditor.resource.js',
-		'~/App_Plugins/uCKEditor/uCKEditor.controller.js'
+		'~/App_Plugins/uCKEditor/uCKEditor.controller.js',
+		'~/App_Plugins/uCKEditor/uCKEditor.dashboard.controller.js', 
     ],
 
     css: [
-		'~/App_Plugins/uCKEditor/uCKEditor.editor.css'
+		'~/App_Plugins/uCKEditor/uCKEditor.editor.css',
+		'~/App_Plugins/uCKEditor/uCKEditor.dashboard.css'
     ]
 
 }

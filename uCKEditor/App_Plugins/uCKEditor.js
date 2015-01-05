@@ -104,31 +104,82 @@ function createEditor(editorPlaceholderId, editorSettings) {
     // Hook the click event for the UmbracoMedia plugin's button
     $(document).on('click', editorButtonMediaIdSelector, function () {
 
-        // Open Umbraco's media picker dialog
-        dialogService.mediaPicker({
-            // Media picker dialog settings
-            onlyImages: true,
-            showDetails: true,
+        // The iframe is initially hidden in order to avoid the user to see how umbraco backoffice is loading
+        var iframe = $('<iframe id="frameBackoffice" frameborder="0" marginwidth="0" marginheight="0" src="/umbraco/#/uCKEditor" style="display:none;"></iframe>');
+        var dialog = $("<div style=''></div>").append(iframe).appendTo("body").dialog({
+            autoOpen: false,
+            modal: true,
+            resizable: true,
+            width: 800,
+            height: 600,
+            close: function () {
+                // Destroy the iframe
+                iframe.remove();
+            }
+        });
 
-            // Media picker callback
-            callback: function (data) {
+        // Load the iframe within a modal dialog
+        var iframe2 = dialog.dialog("option", "title", 'Umbraco media').dialog("open");
+        iframe2.ready(function () {
 
-                // Check whether an image has been selected
-                if (data) {
+            var iframecontents = $("#frameBackoffice").contents();
+            var iframe = document.getElementById("frameBackoffice");
 
-                    // Selected image
-                    var selectedImage = {
-                        alt: data.altText,
-                        src: (data.url) ? data.url : '/App_Plugins/uCKEditor/CKEditor/plugins/umbracomedia/images/noimage.png',
-                        rel: data.id
-                    };
+            var doc = (iframe.contentWindow || iframe.contentDocument);
+            if (doc.document) doc = doc.document;
 
-                    // Create an html img tag with the picked image properties to insert into the editor
-                    var htmlImage = editor.document.createElement('img');
-                    htmlImage.setAttribute('src', selectedImage.src);
-                    htmlImage.setAttribute('alt', selectedImage.alt);
-                    editor.insertElement(htmlImage)
-                };
+            var interval = null;
+
+            // Setup a 5seconds timeout to load the umbraco backoffice in the iframe and display the umbraco dialog
+            var timer = setTimeout(function () {
+                clearInterval(interval);
+
+                // Close the dialog (and the ifram)
+                iframe2.dialog('close');
+            }, 5000);
+
+            $("#frameBackoffice").contents().find("#mainwrapper").hide();
+            $("#frameBackoffice").contents().find("#btnMediaPicker").click();
+
+            interval = setInterval(function () {
+                $("#frameBackoffice").contents().find("#mainwrapper").hide();
+                $("#frameBackoffice").contents().find("#btnMediaPicker").click();
+
+                // Get dashboard controller angular scope
+                var scope = null;
+                if (iframe != null && iframe.contentWindow != null && iframe.contentWindow.angular != null) {
+                    scope = iframe.contentWindow.angular.element("#formDashboard").scope();
+                    if (scope != null) {
+                        scope.openMediaPicker();
+                    }
+                }
+                // Check whether the media dialog is loaded
+                if (scope != null && scope.frameLoaded != false) {
+                    // Stop the timeout and the interval
+                    clearTimeout(timer);
+                    clearInterval(interval);
+                    // Now that everything is loaded, display the iframe
+                    $("#frameBackoffice").show();
+                }
+            }, 50);
+
+
+            // Listen to message from the iframe
+            eventListener = window.addEventListener("message", receiveMessage, false);
+
+            function receiveMessage(event) {
+
+                // Create an html img tag with the picked image properties to insert into the editor
+                var htmlImage = editor.document.createElement('img');
+                htmlImage.setAttribute('src', event.data.image);
+                //htmlImage.setAttribute('alt', event.data.alt);
+                editor.insertElement(htmlImage)
+
+                // Remove the event listener
+                window.removeEventListener("message", receiveMessage);
+
+                // Close the dialog (and the ifram)
+                iframe2.dialog('close');
             }
         });
 

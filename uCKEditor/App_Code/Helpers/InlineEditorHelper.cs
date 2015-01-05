@@ -116,7 +116,7 @@ namespace uCKEditor
             return result;
         }
 
-        public static string InlineEditorInitialize(bool loadJquery = true)
+        public static string InlineEditorInitialize(bool loadJquery = true, bool loadJqueryUI = true)
         {
             var result = new System.Text.StringBuilder();
 
@@ -129,10 +129,18 @@ namespace uCKEditor
                     result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/jquery/jquery-1.11.1.min.js'></script> ");
                 }
 
+                // Check wheter JQueryUI should be loaded or not
+                if (loadJqueryUI)
+                {
+                    result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/jquery/jquery-ui-1.11.2.min.js'></script> ");
+                    result.Append(@" <link rel='stylesheet' href='/App_Plugins/uCKEditor/jquery/jquery-ui-1.11.2-theme-smoothness.css'> ");
+                }
+
                 // Editor's scripts
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/jquery/jquery.cookie.js'></script> ");
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/CKEditor/ckeditor.js'></script> ");
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/uCKEditor.js'></script> ");
+                
                 result.Append(@"<script type='text/javascript'> 
 
                                     // Load dinamically CSS stylesheet

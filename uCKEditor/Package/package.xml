@@ -58,5 +58,15 @@
     </DataType>
   </DataTypes>
   <Actions>
+    <Action runat="install" alias="addDashboardSection" dashboardAlias="uCKEditor">
+      <section>
+        <areas>
+          <area>uCKEditor</area>
+        </areas>
+        <tab caption="uCKEditor">
+          <control>/App_Plugins/uCKEditor/uCKEditor.dashboard.html</control>
+        </tab>
+      </section>
+    </Action>
   </Actions>
 </umbPackage>
