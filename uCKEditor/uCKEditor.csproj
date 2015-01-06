@@ -209,7 +209,9 @@
     <Compile Include="App_Plugins\Installer\Installer.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="App_Plugins\Installer\Installer.ascx.designer.cs" />
+    <Compile Include="App_Plugins\Installer\Installer.ascx.designer.cs">
+      <DependentUpon>Installer.ascx</DependentUpon>
+    </Compile>
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

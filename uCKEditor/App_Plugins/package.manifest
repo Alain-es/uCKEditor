@@ -132,8 +132,7 @@
     ],
 
     css: [
-		'~/App_Plugins/uCKEditor/uCKEditor.editor.css',
-		'~/App_Plugins/uCKEditor/uCKEditor.dashboard.css'
+		'~/App_Plugins/uCKEditor/uCKEditor.editor.css'
     ]
 
 }
