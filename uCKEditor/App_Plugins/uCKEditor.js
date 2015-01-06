@@ -105,7 +105,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
     $(document).on('click', editorButtonMediaIdSelector, function () {
 
         // The iframe is initially hidden in order to avoid the user to see how umbraco backoffice is loading
-        var iframe = $('<iframe id="frameBackoffice" frameborder="0" marginwidth="0" marginheight="0" src="/umbraco/#/uCKEditor" style="display:none;"></iframe>');
+        var iframe = $('<iframe id="frameBackoffice" frameborder="0" marginwidth="0" marginheight="0" src="/umbraco/#/uckeditor" style="display:none;"></iframe>');
         var dialog = $("<div style=''></div>").append(iframe).appendTo("body").dialog({
             autoOpen: false,
             modal: true,
@@ -168,6 +168,8 @@ function createEditor(editorPlaceholderId, editorSettings) {
             eventListener = window.addEventListener("message", receiveMessage, false);
 
             function receiveMessage(event) {
+                //if (event.origin !== "http://domain.com:80")
+                //    return;
 
                 // Create an html img tag with the picked image properties to insert into the editor
                 var htmlImage = editor.document.createElement('img');

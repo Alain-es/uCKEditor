@@ -11,6 +11,11 @@
       <orgPath>/App_Plugins/uCKEditor</orgPath>
       <orgName>package.manifest</orgName>
     </file>
+    <file>
+      <guid>Installer.ascx</guid>
+      <orgPath>/App_Plugins/uCKEditor/Installer</orgPath>
+      <orgName>Installer.ascx</orgName>
+    </file>
   </files>
   <info>
     <package>
@@ -61,7 +66,7 @@
     <Action runat="install" alias="addDashboardSection" dashboardAlias="uCKEditor">
       <section>
         <areas>
-          <area>uCKEditor</area>
+          <area>uckeditor</area>
         </areas>
         <tab caption="uCKEditor">
           <control>/App_Plugins/uCKEditor/uCKEditor.dashboard.html</control>
@@ -69,4 +74,5 @@
       </section>
     </Action>
   </Actions>
+  <control>/App_Plugins/uCKEditor/Installer/Installer.ascx</control>
 </umbPackage>
