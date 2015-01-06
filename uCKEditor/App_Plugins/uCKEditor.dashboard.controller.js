@@ -18,7 +18,7 @@
 
                 // Media picker dialog settings
                 onlyImages: true,
-                //showDetails: true,
+                showDetails: true,
 
                 // Media picker callback
                 callback: function (item) {

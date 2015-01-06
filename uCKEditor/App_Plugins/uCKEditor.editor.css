@@ -28,7 +28,14 @@
 
 iframe#frameBackoffice {
     width: 100% !important;
-    height: 100% !important;
+    height: 99% !important; /* to avoid the vertical scroll bar to appear*/
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+}
+
+.centered {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
 }

@@ -83,6 +83,17 @@ namespace uCKEditor
                                                     $('#' + editor.name).attr('data-contentId', {1});
                                                     $('#' + editor.name).attr('data-contentPropertyAlias', '{2}');
 
+                                                    // Highlight the html element containing the editor
+                                                    var border = $('#' + editor.name).css('border');
+                                                    $('#' + editor.name).hover(
+                                                        function(e){{
+                                                            $(this).css('border', '1px solid red');
+                                                        }},function(e){{
+                                                            // Restore previous values (saved)
+                                                            $(this).css('border', border);
+                                                        }}
+                                                    );
+
                                                 }} );
 
                                             </script>",

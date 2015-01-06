@@ -106,12 +106,12 @@ function createEditor(editorPlaceholderId, editorSettings) {
 
         // The iframe is initially hidden in order to avoid the user to see how umbraco backoffice is loading
         var iframe = $('<iframe id="frameBackoffice" frameborder="0" marginwidth="0" marginheight="0" src="/umbraco/#/uckeditor" style="display:none;"></iframe>');
-        var dialog = $("<div style=''></div>").append(iframe).appendTo("body").dialog({
+        var dialog = $("<div style=''><div id='divLoading' class='centered'> Loading ...</div></div>").append(iframe).appendTo("body").dialog({
             autoOpen: false,
             modal: true,
             resizable: true,
-            width: 800,
-            height: 600,
+            width: Math.round($(window).width() * 0.8),
+            height: Math.round($(window).height() * 0.8),
             close: function () {
                 // Destroy the iframe
                 iframe.remove();
