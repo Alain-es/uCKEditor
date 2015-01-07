@@ -26,7 +26,7 @@ function ($scope, assetsService, dialogService, $log) {
             // Create the CKEditor control
             var editor;
 
-            // Loads plugin to insert images from the Umbraco Media Library 
+            // Loads plugin (UmbracoMedia, UmbracoEmbed, ...)
             if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
                 CKEDITOR.config.plugins += ',umbracomedia,umbracoembed';
             else

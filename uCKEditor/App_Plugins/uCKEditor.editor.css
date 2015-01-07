@@ -26,7 +26,7 @@
 }
 
 
-iframe#frameBackoffice {
+iframe#umbracoBackofficeIframe {
     width: 100% !important;
     height: 99% !important; /* to avoid the vertical scroll bar to appear*/
     box-sizing: border-box;

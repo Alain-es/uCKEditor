@@ -1,6 +1,5 @@
 ﻿
 /* Settings structure:
-
         editorSettings = {
             customConfigurationFile: "",
             width: "",
@@ -17,7 +16,6 @@
             extraPlugins: "",
             removePlugins: ""
         } 
-
 */
 
 function createEditor(editorPlaceholderId, editorSettings) {
@@ -37,11 +35,11 @@ function createEditor(editorPlaceholderId, editorSettings) {
     // Create the inline CKEditor control
     var editor;
 
-    // Loads plugins to insert images from the Umbraco Media Library and to save changes 
+    // Loads plugin (UmbracoMedia, UmbracoEmbed, ...)
     if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
-        CKEDITOR.config.plugins += ',umbracomedia,umbracosave';
+        CKEDITOR.config.plugins += ',umbracomedia,umbracoembed,umbracosave';
     else
-        CKEDITOR.config.plugins = 'umbracomedia,umbracosave';
+        CKEDITOR.config.plugins = 'umbracomedia,umbracoembed,umbracosave';
 
     if (editorSettings.customConfigurationFile != null && jQuery.trim(editorSettings.customConfigurationFile) != '') {
         // Create the editor using the custom configuration file
@@ -72,7 +70,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
             CKEDITOR.config.extraAllowedContent = editorSettings.extraAllowedContent;
         }
         if (editorSettings.toolbar != null && jQuery.trim(editorSettings.toolbar) != '') {
-            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia'], " + editorSettings.toolbar + ",]");
+            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia','umbracoembed'], " + editorSettings.toolbar + ",]");
         }
         if (editorSettings.toolbarGroups != null && jQuery.trim(editorSettings.toolbarGroups) != '') {
             CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + editorSettings.toolbarGroups + ",]");
@@ -103,89 +101,141 @@ function createEditor(editorPlaceholderId, editorSettings) {
 
     // Hook the click event for the UmbracoMedia plugin's button
     $(document).on('click', editorButtonMediaIdSelector, function () {
+        umbracoBackofficeDialog('media', 'Umbraco media');
+    });
+
+    // Get UmbracoEmbed plugin's button IDs
+    var editorButtonEmbedIdSelector = '#' + editorId + ' .cke_button__umbracoembed';
+
+    // Hook the click event for the UmbracoEmbed plugin's button
+    $(document).on('click', editorButtonEmbedIdSelector, function () {
+        umbracoBackofficeDialog('embed', 'Umbraco embed');
+    });
+
+    function umbracoBackofficeDialog(dialogType, dialogTitle) {
+
+        // Variables to store references in order to destroy/remove properly objects
+        var iframeHandler = null;
+        var dialogHandler = null;
+        var eventListenerReceiveMessage = null;
 
         // The iframe is initially hidden in order to avoid the user to see how umbraco backoffice is loading
-        var iframe = $('<iframe id="frameBackoffice" frameborder="0" marginwidth="0" marginheight="0" src="/umbraco/#/uckeditor" style="display:none;"></iframe>');
-        var dialog = $("<div style=''><div id='divLoading' class='centered'> Loading ...</div></div>").append(iframe).appendTo("body").dialog({
+        iframeHandler = $('<iframe id="umbracoBackofficeIframe" frameborder="0" marginwidth="0" marginheight="0" src="/umbraco/#/uckeditor" style="display:none;"></iframe>');
+        var dialog = $("<div style=''><div id='divLoading' class='centered'> Loading ... </div></div>").append(iframeHandler).appendTo("body").dialog({
             autoOpen: false,
             modal: true,
             resizable: true,
             width: Math.round($(window).width() * 0.8),
             height: Math.round($(window).height() * 0.8),
             close: function () {
-                // Destroy the iframe
-                iframe.remove();
+                // Remove the event listener
+                if (eventListenerReceiveMessage) {
+                    window.removeEventListener("message", eventListenerReceiveMessage, false);
+                }
+                // Destroy the dialogHandler 
+                if (dialogHandler) {
+                    dialogHandler.remove();
+                }
+                // Destroy the iframeHandler
+                if (iframeHandler) {
+                    iframeHandler.remove();
+                }
             }
         });
 
         // Load the iframe within a modal dialog
-        var iframe2 = dialog.dialog("option", "title", 'Umbraco media').dialog("open");
-        iframe2.ready(function () {
+        dialogHandler = dialog.dialog("option", "title", dialogTitle).dialog("open");
+        dialogHandler.ready(function () {
 
-            var iframecontents = $("#frameBackoffice").contents();
-            var iframe = document.getElementById("frameBackoffice");
+            // Look for the iframe
+            var iframe = document.getElementById("umbracoBackofficeIframe");
 
-            var doc = (iframe.contentWindow || iframe.contentDocument);
-            if (doc.document) doc = doc.document;
-
+            // Setup a 10 seconds timeout to load the umbraco backoffice and display the umbraco dialog
             var interval = null;
-
-            // Setup a 5seconds timeout to load the umbraco backoffice in the iframe and display the umbraco dialog
             var timer = setTimeout(function () {
+                // Stop the timeout
                 clearInterval(interval);
+                // Close the dialog 
+                if (dialogHandler) {
+                    dialogHandler.dialog('close');
+                }
+            }, 10000);
 
-                // Close the dialog (and the ifram)
-                iframe2.dialog('close');
-            }, 5000);
-
-            $("#frameBackoffice").contents().find("#mainwrapper").hide();
-            $("#frameBackoffice").contents().find("#btnMediaPicker").click();
-
+            // Iterate until the umbraco backoffice scope is loaded or the timeout goes off
+            $("#umbracoBackofficeIframe").contents().find("#mainwrapper").hide();
             interval = setInterval(function () {
-                $("#frameBackoffice").contents().find("#mainwrapper").hide();
-                $("#frameBackoffice").contents().find("#btnMediaPicker").click();
-
-                // Get dashboard controller angular scope
+                $("#umbracoBackofficeIframe").contents().find("#mainwrapper").hide();
+                // Get dashboard controller's angular scope (umbraco backoffice)
                 var scope = null;
                 if (iframe != null && iframe.contentWindow != null && iframe.contentWindow.angular != null) {
-                    scope = iframe.contentWindow.angular.element("#formDashboard").scope();
+                    scope = iframe.contentWindow.angular.element("#uCKEditorDashboard").scope();
                     if (scope != null) {
-                        scope.openMediaPicker();
+                        switch (dialogType) {
+                            case 'media':
+                                scope.openDialogMediaPicker();
+                                break;
+                            case 'embed':
+                                scope.openDialogEmbed();
+                                break;
+                            default:
+                        }
                     }
                 }
-                // Check whether the media dialog is loaded
-                if (scope != null && scope.frameLoaded != false) {
+                // Check whether the dialog is loaded
+                if (scope != null && scope.umbracoDialogLoaded != false) {
                     // Stop the timeout and the interval
                     clearTimeout(timer);
                     clearInterval(interval);
                     // Now that everything is loaded, display the iframe
-                    $("#frameBackoffice").show();
+                    $("#umbracoBackofficeIframe").show();
+                    // Hide the loading message
+                    $("#divLoading").hide();
                 }
             }, 50);
 
-
             // Listen to message from the iframe
-            eventListener = window.addEventListener("message", receiveMessage, false);
-
-            function receiveMessage(event) {
-                //if (event.origin !== "http://domain.com:80")
-                //    return;
-
-                // Create an html img tag with the picked image properties to insert into the editor
-                var htmlImage = editor.document.createElement('img');
-                htmlImage.setAttribute('src', event.data.image);
-                //htmlImage.setAttribute('alt', event.data.alt);
-                editor.insertElement(htmlImage)
-
-                // Remove the event listener
-                window.removeEventListener("message", receiveMessage);
-
-                // Close the dialog (and the ifram)
-                iframe2.dialog('close');
+            eventListenerReceiveMessage = function (event) {
+                // Check the message's origin
+                /*if (event.origin !== "http://domain.com:80")
+                    return;
+                */
+                // Insert into the editor the item(s) returned by the dialog
+                switch (dialogType) {
+                    case 'media':
+                        // Create an html img tag with the picked image 
+                        if (event.data) {
+                            // Selected image
+                            var selectedImage = {
+                                alt: event.data.altText,
+                                src: (event.data.url) ? event.data.url : '/App_Plugins/uCKEditor/CKEditor/plugins/umbracomedia/images/noimage.png',
+                                rel: event.data.id
+                            };
+                            // Create an html img tag with the picked image properties to insert into the editor
+                            var htmlImage = editor.document.createElement('img');
+                            htmlImage.setAttribute('src', selectedImage.src);
+                            htmlImage.setAttribute('alt', selectedImage.alt);
+                            editor.insertElement(htmlImage)
+                        };
+                        break;
+                    case 'embed':
+                        // Create an html iframe with the url
+                        if (event.data) {
+                            var embedElement = CKEDITOR.dom.element.createFromHtml(event.data, editor.document);
+                            editor.insertElement(embedElement);
+                        };
+                        break;
+                    default:
+                }
+                // Close the dialog
+                if (dialogHandler) {
+                    dialogHandler.dialog('close');
+                }
             }
+            window.addEventListener("message", eventListenerReceiveMessage, false);
+
         });
 
-    });
+    }
 
     // Get UmbracoSave plugin's button IDs
     var editorButtonSaveIdSelector = '#' + editorId + ' .cke_button__umbracosave';
