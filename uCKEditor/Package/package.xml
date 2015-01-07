@@ -20,9 +20,9 @@
   <info>
     <package>
       <name>uCKEditor</name>
-      <version>0.5.0</version>
+      <version>0.6.0</version>
       <license url="http://opensource.org/licenses/MIT">MIT License</license>
-      <url>uCKEditor</url>
+      <url>http://our.umbraco.org/projects/backoffice-extensions/uckeditor</url>
       <requirements>
         <major>7</major>
         <minor>1</minor>
@@ -30,10 +30,10 @@
       </requirements>
     </package>
     <author>
-      <name>uCKEditor</name>
-      <website>-</website>
+      <name>Alain</name>
+      <website>https://github.com/Alain-es/uCKEditor</website>
     </author>
-    <readme><![CDATA[uCKEditor v0.5.0 requires Umbraco v7.1.4 or above]]></readme>
+    <readme><![CDATA[uCKEditor requires Umbraco v7.1.4 or above]]></readme>
   </info>
   <DocumentTypes />
   <Templates />
