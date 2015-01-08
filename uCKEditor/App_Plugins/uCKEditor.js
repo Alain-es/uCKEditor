@@ -37,9 +37,9 @@ function createEditor(editorPlaceholderId, editorSettings) {
 
     // Loads plugin (UmbracoMedia, UmbracoEmbed, ...)
     if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
-        CKEDITOR.config.plugins += ',umbracomedia,umbracoembed,umbracosave';
+        CKEDITOR.config.plugins += ',umbracomedia,umbracomediatagging,umbracoembed,umbracosave';
     else
-        CKEDITOR.config.plugins = 'umbracomedia,umbracoembed,umbracosave';
+        CKEDITOR.config.plugins = 'umbracomedia,umbracomediatagging,umbracoembed,umbracosave';
 
     if (editorSettings.customConfigurationFile != null && jQuery.trim(editorSettings.customConfigurationFile) != '') {
         // Create the editor using the custom configuration file
@@ -70,7 +70,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
             CKEDITOR.config.extraAllowedContent = editorSettings.extraAllowedContent;
         }
         if (editorSettings.toolbar != null && jQuery.trim(editorSettings.toolbar) != '') {
-            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia','umbracoembed'], " + editorSettings.toolbar + ",]");
+            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia','umbracomediatagging','umbracoembed'], " + editorSettings.toolbar + ",]");
         }
         if (editorSettings.toolbarGroups != null && jQuery.trim(editorSettings.toolbarGroups) != '') {
             CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + editorSettings.toolbarGroups + ",]");
@@ -101,7 +101,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
 
     // Hook the click event for the UmbracoMedia plugin's button
     $(document).on('click', editorButtonMediaIdSelector, function () {
-        umbracoBackofficeDialog('media', 'Umbraco media');
+        umbracoBackofficeDialog('media', 'Media');
     });
 
     // Get UmbracoEmbed plugin's button IDs
@@ -109,8 +109,17 @@ function createEditor(editorPlaceholderId, editorSettings) {
 
     // Hook the click event for the UmbracoEmbed plugin's button
     $(document).on('click', editorButtonEmbedIdSelector, function () {
-        umbracoBackofficeDialog('embed', 'Umbraco embed');
+        umbracoBackofficeDialog('embed', 'Embed');
     });
+
+    // Get UmbracoMediaTagging plugin's button IDs
+    var editorButtonMediaTaggingIdSelector = '#' + editorId + ' .cke_button__umbracomediatagging';
+
+    // Hook the click event for the UmbracoMediaTagging plugin's button
+    $(document).on('click', editorButtonMediaTaggingIdSelector, function () {
+        umbracoBackofficeDialog('mediatagging', 'Media');
+    });
+
 
     function umbracoBackofficeDialog(dialogType, dialogTitle) {
 
@@ -177,6 +186,9 @@ function createEditor(editorPlaceholderId, editorSettings) {
                             case 'embed':
                                 scope.openDialogEmbed();
                                 break;
+                            case 'mediatagging':
+                                scope.openDialogMediaTaggingPicker();
+                                break;
                             default:
                         }
                     }
@@ -202,7 +214,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
                 // Insert into the editor the item(s) returned by the dialog
                 switch (dialogType) {
                     case 'media':
-                        // Create an html img tag with the picked image 
+                        // Check whether an image has been selected
                         if (event.data) {
                             // Selected image
                             var selectedImage = {
@@ -218,10 +230,27 @@ function createEditor(editorPlaceholderId, editorSettings) {
                         };
                         break;
                     case 'embed':
-                        // Create an html iframe with the url
+                        // Check whether there is an embed object
                         if (event.data) {
+                        // Create an html iframe with the url
                             var embedElement = CKEDITOR.dom.element.createFromHtml(event.data, editor.document);
                             editor.insertElement(embedElement);
+                        };
+                        break;
+                    case 'mediatagging':
+                        // Check whether an image has been selected
+                        if (event.data) {
+                            // Selected image
+                            var selectedImage = {
+                                alt: '',
+                                src: (event.data.image) ? event.data.image : '/App_Plugins/uCKEditor/CKEditor/plugins/umbracomediatagging/images/noimage.png',
+                                rel: event.data.id
+                            };
+                            // Create an html img tag with the picked image properties to insert into the editor
+                            var htmlImage = editor.document.createElement('img');
+                            htmlImage.setAttribute('src', selectedImage.src);
+                            htmlImage.setAttribute('alt', selectedImage.alt);
+                            editor.insertElement(htmlImage)
                         };
                         break;
                     default:

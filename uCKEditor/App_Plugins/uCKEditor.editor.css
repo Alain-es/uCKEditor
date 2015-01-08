@@ -25,6 +25,15 @@
     background-size: 16px !important;
 }
 
+.cke_button__umbracomediatagging_icon {
+    background: url(/App_Plugins/uCKEditor/CKEditor/plugins/umbracomediatagging/icons/umbracomediatagging.png) no-repeat scroll 0 0 transparent !important;
+}
+
+.cke_hidpi .cke_button__umbracomediatagging_icon {
+    background: url(/App_Plugins/uCKEditor/CKEditor/plugins/umbracomediatagging/icons/hidpi/umbracomediatagging.png) no-repeat scroll 0 0 transparent !important;
+    background-size: 16px !important;
+}
+
 
 iframe#umbracoBackofficeIframe {
     width: 100% !important;

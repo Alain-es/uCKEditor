@@ -42,6 +42,23 @@
             $scope.umbracoDialogLoaded = true;
         }
 
+        $scope.openDialogMediaTaggingPicker = function () {
+            // Open Umbraco's media tagging picker dialog
+            dialogService.open({
+                // Dialog
+                template: '/App_Plugins/MediaTagging/Dialog/_dialog.html',
+                show: true,
+                // Dialog Callback
+                callback: function (item) {
+                    console.log(item);
+                    // Return the value to the iframe's parent posting a message
+                    $window.parent.postMessage(item, '*');
+                }
+            });
+            // To let know the caller than the dialog is loaded
+            $scope.umbracoDialogLoaded = true;
+        }
+
     };
 
     //register the controller

@@ -282,7 +282,7 @@ REM -- Package
 REM -- App_Plugins
 REM @XCOPY "$(ProjectDir)\App_Plugins\*.*" "$(SolutionDir)\installer\uCKEditor\App_Plugins\" /y /i /q /s
 
-@XCOPY "$(ProjectDir)\App_Plugins\Installer\*.*" "$(SolutionDir)\installer\uCKEditor\App_Plugins\Installer\" /y /i /q /s
+@XCOPY "$(ProjectDir)\App_Plugins\Installer\Installer.ascx" "$(SolutionDir)\installer\uCKEditor\App_Plugins\Installer\" /y /i /q /s
 @XCOPY "$(ProjectDir)\App_Plugins\package.manifest" "$(SolutionDir)\installer\uCKEditor\" /y /i /q /s
 
 REM -- Create package's zip file

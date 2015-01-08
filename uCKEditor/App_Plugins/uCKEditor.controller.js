@@ -28,9 +28,9 @@ function ($scope, assetsService, dialogService, $log) {
 
             // Loads plugin (UmbracoMedia, UmbracoEmbed, ...)
             if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
-                CKEDITOR.config.plugins += ',umbracomedia,umbracoembed';
+                CKEDITOR.config.plugins += ',umbracomedia,umbracomediatagging,umbracoembed';
             else
-                CKEDITOR.config.plugins = 'umbracomedia,umbracoembed';
+                CKEDITOR.config.plugins = 'umbracomedia,umbracomediatagging,umbracoembed';
 
             if ($scope.model.config.customConfigurationFile != null && jQuery.trim($scope.model.config.customConfigurationFile) != '') {
                 // Create the editor using the custom configuration file
@@ -61,7 +61,7 @@ function ($scope, assetsService, dialogService, $log) {
                     CKEDITOR.config.extraAllowedContent = $scope.model.config.extraAllowedContent;
                 }
                 if ($scope.model.config.toolbar != null && jQuery.trim($scope.model.config.toolbar) != '') {
-                    CKEDITOR.config.toolbar = eval("[['umbracomedia,umbracoembed'], " + $scope.model.config.toolbar + ",]");
+                    CKEDITOR.config.toolbar = eval("[['umbracomedia,umbracomediatagging,umbracoembed'], " + $scope.model.config.toolbar + ",]");
                 }
                 if ($scope.model.config.toolbarGroups != null && jQuery.trim($scope.model.config.toolbarGroups) != '') {
                     CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + $scope.model.config.toolbarGroups + ",]");
@@ -144,10 +144,38 @@ function ($scope, assetsService, dialogService, $log) {
                         };
                     }
                 });
-
             });
 
+            // Get UmbracoMediaTagging plugin's button IDs
+            var editorButtonMediaTaggingIdSelector = '#' + editorId + ' .cke_button__umbracomediatagging';
 
+            // Hook the click event for the UmbracoMediaTagging plugin's button
+            $(document).on('click', editorButtonMediaTaggingIdSelector, function () {
+                // Open Umbraco's media tagging picker dialog
+                dialogService.open({
+                    // Dialog
+                    template: '/App_Plugins/MediaTagging/Dialog/_dialog.html',
+                    show: true,
+                    // Media tagging picker callback
+                    callback: function (data) {
+                        // Check whether an image has been selected
+                        if (data) {
+                            // Selected image
+                            var selectedImage = {
+                                alt: '',
+                                src: (data.image) ? data.image : '/App_Plugins/uCKEditor/CKEditor/plugins/umbracomediatagging/images/noimage.png',
+                                rel: data.id
+                            };
+                            // Create an html img tag with the picked image properties to insert into the editor
+                            var htmlImage = editor.document.createElement('img');
+                            htmlImage.setAttribute('src', selectedImage.src);
+                            htmlImage.setAttribute('alt', selectedImage.alt);
+                            editor.insertElement(htmlImage)
+                        };
+                    }
+            });
+
+            });
 
             // Set editor's value (when loading)
             editor.setData($scope.model.value);

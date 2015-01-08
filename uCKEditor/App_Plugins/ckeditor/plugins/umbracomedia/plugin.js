@@ -12,7 +12,7 @@ CKEDITOR.plugins.add('umbracomedia', {
         });
         editor.ui.addButton('umbracomedia', {
             //label: editor.lang.umbracomedia.tooltip,
-            label: "Umbraco media picker",
+            label: "Media picker",
             command: 'umbracomedia',
             toolbar: 'umbraco,1'
         });
