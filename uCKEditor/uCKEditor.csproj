@@ -206,12 +206,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_Plugins\**\*.*" />
-    <Compile Include="App_Plugins\Installer\Installer.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="App_Plugins\Installer\Installer.ascx.designer.cs">
-      <DependentUpon>Installer.ascx</DependentUpon>
-    </Compile>
+    <Content Include="App_Code\Installer\Setup.ascx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -235,6 +232,15 @@
     <Compile Include="App_Code\Extensions\UserExtensions.cs" />
     <Compile Include="App_Code\Helpers\InlineEditorHelper.cs" />
     <Compile Include="App_Code\Helpers\PermissionHelper.cs" />
+    <Compile Include="App_Code\Installer\Setup.ascx.cs">
+      <DependentUpon>Setup.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Installer\Setup.ascx.designer.cs">
+      <DependentUpon>Setup.ascx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Controllers\uCKEditorApiController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -270,23 +276,24 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>REM -- Clean
-@DEL "$(SolutionDir)\installer\*.*" /f /s /q
-@RMDIR "$(SolutionDir)\installer\" /s /q
+@DEL "$(SolutionDir)installer\*.*" /f /s /q
+@RMDIR "$(SolutionDir)installer\" /s /q
 
 REM -- Binaries
-@XCOPY "$(TargetPath)" "$(SolutionDir)\installer\uCKEditor\" /y /i /q
+@XCOPY "$(TargetPath)" "$(SolutionDir)installer\uCKEditor\" /y /i /q
 
 REM -- Package
-@XCOPY "$(ProjectDir)\Package\package.xml" "$(SolutionDir)\installer\uCKEditor\" /y /i /q
+@XCOPY "$(ProjectDir)Package\package.xml" "$(SolutionDir)installer\uCKEditor\" /y /i /q
+
+REM -- Installer
+@XCOPY "$(TargetDir)App_Code\Installer\Setup.ascx" "$(SolutionDir)installer\uCKEditor\App_Plugins\Installer\" /y /i /q /s
 
 REM -- App_Plugins
-REM @XCOPY "$(ProjectDir)\App_Plugins\*.*" "$(SolutionDir)\installer\uCKEditor\App_Plugins\" /y /i /q /s
-
-@XCOPY "$(ProjectDir)\App_Plugins\Installer\Installer.ascx" "$(SolutionDir)\installer\uCKEditor\App_Plugins\Installer\" /y /i /q /s
-@XCOPY "$(ProjectDir)\App_Plugins\package.manifest" "$(SolutionDir)\installer\uCKEditor\" /y /i /q /s
+REM @XCOPY "$(ProjectDir)App_Plugins\*.*" "$(SolutionDir)installer\uCKEditor\App_Plugins\" /y /i /q /s
+@XCOPY "$(ProjectDir)App_Plugins\package.manifest" "$(SolutionDir)installer\uCKEditor\" /y /i /q /s
 
 REM -- Create package's zip file
-"C:\Program Files\7-Zip\7z.exe" a -tzip "$(SolutionDir)\installer\uCKEditor.zip" "$(SolutionDir)\installer\uCKEditor\*.*" -r
+REM "C:\Program Files\7-Zip\7z.exe" a -tzip "$(SolutionDir)installer\uCKEditor.zip" "$(SolutionDir)installer\uCKEditor\*.*" -r
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

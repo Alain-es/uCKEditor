@@ -12,9 +12,9 @@
       <orgName>package.manifest</orgName>
     </file>
     <file>
-      <guid>Installer.ascx</guid>
+      <guid>Setup.ascx</guid>
       <orgPath>/App_Plugins/uCKEditor/Installer</orgPath>
-      <orgName>Installer.ascx</orgName>
+      <orgName>Setup.ascx</orgName>
     </file>
   </files>
   <info>
@@ -69,10 +69,10 @@
           <area>uckeditor</area>
         </areas>
         <tab caption="uCKEditor">
-          <control>/App_Plugins/uCKEditor/uCKEditor.dashboard.html</control>
+          <control>/App_Plugins/uCKEditor/Dashboard/uCKEditor.dashboard.html</control>
         </tab>
       </section>
     </Action>
   </Actions>
-  <control>/App_Plugins/uCKEditor/Installer/Installer.ascx</control>
+  <control>/App_Plugins/uCKEditor/Installer/Setup.ascx</control>
 </umbPackage>

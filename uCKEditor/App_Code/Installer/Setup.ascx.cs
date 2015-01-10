@@ -5,16 +5,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using Umbraco.Core;
-using Umbraco.Core.Models;
-
-namespace uCKEditor.App_Plugins.Installer
+namespace uCKEditor.Installer
 {
-    public partial class Installer : System.Web.UI.UserControl
+    public partial class Setup : System.Web.UI.UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-         
+
         }
     }
 }

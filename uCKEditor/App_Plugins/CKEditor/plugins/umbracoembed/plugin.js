@@ -12,9 +12,9 @@ CKEDITOR.plugins.add('umbracoembed', {
         });
         editor.ui.addButton('umbracoembed', {
             //label: editor.lang.umbracoembed.tooltip,
-            label: "Umbraco embed",
+            label: "Embed",
             command: 'umbracoembed',
-            toolbar: 'umbraco,2'
+            toolbar: 'umbraco,3'
         });
     }
 });

@@ -128,7 +128,7 @@
     javascript: [
 		'~/App_Plugins/uCKEditor/uCKEditor.resource.js',
 		'~/App_Plugins/uCKEditor/uCKEditor.controller.js',
-		'~/App_Plugins/uCKEditor/uCKEditor.dashboard.controller.js', 
+		'~/App_Plugins/uCKEditor/Dashboard/uCKEditor.dashboard.controller.js', 
     ],
 
     css: [

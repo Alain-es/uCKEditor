@@ -28,9 +28,9 @@ function ($scope, assetsService, dialogService, $log) {
 
             // Loads plugin (UmbracoMedia, UmbracoEmbed, ...)
             if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
-                CKEDITOR.config.plugins += ',umbracomedia,umbracomediatagging,umbracoembed';
+                CKEDITOR.config.plugins += ',umbracomedia,umbracoembed'; /*umbracomediatagging*/
             else
-                CKEDITOR.config.plugins = 'umbracomedia,umbracomediatagging,umbracoembed';
+                CKEDITOR.config.plugins = 'umbracomedia,umbracoembed'; /*umbracomediatagging*/
 
             if ($scope.model.config.customConfigurationFile != null && jQuery.trim($scope.model.config.customConfigurationFile) != '') {
                 // Create the editor using the custom configuration file
@@ -61,7 +61,7 @@ function ($scope, assetsService, dialogService, $log) {
                     CKEDITOR.config.extraAllowedContent = $scope.model.config.extraAllowedContent;
                 }
                 if ($scope.model.config.toolbar != null && jQuery.trim($scope.model.config.toolbar) != '') {
-                    CKEDITOR.config.toolbar = eval("[['umbracomedia,umbracomediatagging,umbracoembed'], " + $scope.model.config.toolbar + ",]");
+                    CKEDITOR.config.toolbar = eval("[['umbracomedia,umbracoembed'], " + $scope.model.config.toolbar + ",]"); /*umbracomediatagging*/
                 }
                 if ($scope.model.config.toolbarGroups != null && jQuery.trim($scope.model.config.toolbarGroups) != '') {
                     CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + $scope.model.config.toolbarGroups + ",]");

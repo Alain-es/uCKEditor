@@ -37,9 +37,9 @@ function createEditor(editorPlaceholderId, editorSettings) {
 
     // Loads plugin (UmbracoMedia, UmbracoEmbed, ...)
     if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
-        CKEDITOR.config.plugins += ',umbracomedia,umbracomediatagging,umbracoembed,umbracosave';
+        CKEDITOR.config.plugins += ',umbracomedia,umbracoembed,umbracosave'; /*umbracomediatagging*/
     else
-        CKEDITOR.config.plugins = 'umbracomedia,umbracomediatagging,umbracoembed,umbracosave';
+        CKEDITOR.config.plugins = 'umbracomedia,umbracoembed,umbracosave'; /*umbracomediatagging*/
 
     if (editorSettings.customConfigurationFile != null && jQuery.trim(editorSettings.customConfigurationFile) != '') {
         // Create the editor using the custom configuration file
@@ -70,7 +70,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
             CKEDITOR.config.extraAllowedContent = editorSettings.extraAllowedContent;
         }
         if (editorSettings.toolbar != null && jQuery.trim(editorSettings.toolbar) != '') {
-            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia','umbracomediatagging','umbracoembed'], " + editorSettings.toolbar + ",]");
+            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia','umbracoembed'], " + editorSettings.toolbar + ",]"); /*'umbracomediatagging'*/
         }
         if (editorSettings.toolbarGroups != null && jQuery.trim(editorSettings.toolbarGroups) != '') {
             CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + editorSettings.toolbarGroups + ",]");

@@ -5,7 +5,7 @@
     function uCKEditorDashboardController($log, $rootScope, $scope, dialogService, $window, assetsService) {
 
         // Load the css that converts the right hand side dialog into a full screen dialog
-        assetsService.loadCss("/App_Plugins/uCKEditor/uCKEditor.dashboard.css");
+        assetsService.loadCss("/App_Plugins/uCKEditor/Dashboard/uCKEditor.dashboard.css");
 
         // This value is checked by the javascript executed when the user clicks on the button in order to check if the requested Umbraco's dialog (mediaPicker, embedDialog, ...) is loaded
         $scope.umbracoDialogLoaded = false;

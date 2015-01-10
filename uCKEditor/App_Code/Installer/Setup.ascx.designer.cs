@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace uCKEditor.App_Plugins.Installer
-{
-    public partial class Installer
-    {
+namespace uCKEditor.Installer {
+    
+    
+    public partial class Setup {
     }
 }
