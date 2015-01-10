@@ -293,7 +293,7 @@ REM @XCOPY "$(ProjectDir)App_Plugins\*.*" "$(SolutionDir)installer\uCKEditor\App
 @XCOPY "$(ProjectDir)App_Plugins\package.manifest" "$(SolutionDir)installer\uCKEditor\" /y /i /q /s
 
 REM -- Create package's zip file
-REM "C:\Program Files\7-Zip\7z.exe" a -tzip "$(SolutionDir)installer\uCKEditor.zip" "$(SolutionDir)installer\uCKEditor\*.*" -r
+"C:\Program Files\7-Zip\7z.exe" a -tzip "$(SolutionDir)installer\uCKEditor.zip" "$(SolutionDir)installer\uCKEditor\*.*" -r
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

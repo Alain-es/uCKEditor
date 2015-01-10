@@ -42,25 +42,6 @@
   <DictionaryItems />
   <Languages />
   <DataTypes>
-    <DataType Name="uCKEditor" Id="uCKEditor" Definition="5049324d-46e3-4c4d-aab0-389093b88ec8" DatabaseType="Ntext">
-      <PreValues>
-        <PreValue Id="1" Alias="hideLabel" Value="1" />
-        <PreValue Id="2" Alias="customConfigurationFile" Value="" />
-        <PreValue Id="3" Alias="width" Value="" />
-        <PreValue Id="4" Alias="height" Value="500" />
-        <PreValue Id="5" Alias="language" Value="en" />
-        <PreValue Id="6" Alias="font_names" Value="" />
-        <PreValue Id="7" Alias="font_style" Value="" />
-        <PreValue Id="8" Alias="format_tags" Value="" />
-        <PreValue Id="9" Alias="allowedContent" Value="" />
-        <PreValue Id="10" Alias="extraAllowedContent" Value="" />
-        <PreValue Id="11" Alias="toolbar" Value="" />
-        <PreValue Id="12" Alias="toolbarGroups" Value="" />
-        <PreValue Id="13" Alias="removeButtons" Value="NewPage,Preview,Templates,Save,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,IFrame" />
-        <PreValue Id="14" Alias="extraPlugins" Value="" />
-        <PreValue Id="15" Alias="removePlugins" Value="" />
-      </PreValues>
-    </DataType>
   </DataTypes>
   <Actions>
     <Action runat="install" alias="addDashboardSection" dashboardAlias="uCKEditor">
