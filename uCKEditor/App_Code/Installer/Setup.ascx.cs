@@ -31,7 +31,7 @@ namespace uCKEditor.Installer
                     var dataTypeDefinition = new DataTypeDefinition(-1, PropertyEditorAlias)
                     {
                         DatabaseType = DataTypeDatabaseType.Ntext,
-                        Name = PropertyEditorAlias + "5"
+                        Name = PropertyEditorAlias
                     };
                     // Prevalues
                     var dataTypePreValues = new Dictionary<string, PreValue>();
