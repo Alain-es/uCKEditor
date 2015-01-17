@@ -44,6 +44,7 @@
   <DataTypes>
   </DataTypes>
   <Actions>
+    <Action runat="install" alias="deleteFile" deleteFile="~/App_Plugins/uCKEditor/Installer/Installer.ascx" />
     <Action runat="install" alias="addDashboardSection" dashboardAlias="uCKEditor">
       <section>
         <areas>
