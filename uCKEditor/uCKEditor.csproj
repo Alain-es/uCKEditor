@@ -275,25 +275,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>REM -- Clean
-@DEL "$(ProjectDir)..\installer\*.*" /f /s /q
-@RMDIR "$(ProjectDir)..\installer\" /s /q
+    <PostBuildEvent>SET PackageName=uCKEditor
 
-REM -- Binaries
-@XCOPY "$(TargetPath)" "$(ProjectDir)..\installer\uCKEditor\" /y /i /q
+CALL "$(ProjectDir)Package\build.bat" "%25PackageName%25" "$(ProjectDir)" "$(SolutionDir)" "$(SolutionName)" "$(TargetDir)" "$(TargetPath)"
 
-REM -- Package
-@XCOPY "$(ProjectDir)Package\package.xml" "$(ProjectDir)..\installer\uCKEditor\" /y /i /q
 
-REM -- Installer
-@XCOPY "$(TargetDir)App_Code\Installer\Setup.ascx" "$(ProjectDir)..\installer\uCKEditor\App_Plugins\Installer\" /y /i /q /s
 
-REM -- App_Plugins
-REM @XCOPY "$(ProjectDir)App_Plugins\*.*" "$(ProjectDir)..\installer\uCKEditor\App_Plugins\" /y /i /q /s
-@XCOPY "$(ProjectDir)App_Plugins\package.manifest" "$(ProjectDir)..\installer\uCKEditor\" /y /i /q /s
-
-REM -- Create package's zip file
-REM "C:\Program Files\7-Zip\7z.exe" a -tzip "$(ProjectDir)..\installer\uCKEditor.zip" "$(ProjectDir)..\installer\uCKEditor\*.*" -r
 
 </PostBuildEvent>
   </PropertyGroup>
