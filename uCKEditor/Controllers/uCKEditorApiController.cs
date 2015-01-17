@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Web.Http;
 
 using umbraco;
 using Umbraco.Core;
@@ -22,6 +23,9 @@ using Umbraco.Web.WebApi;
 using Umbraco.Web.Models.ContentEditing;
 
 using AutoMapper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 
 namespace uCKEditor.Controllers.Api
 {
@@ -45,10 +49,45 @@ namespace uCKEditor.Controllers.Api
         //    return result;
         //}
 
-        [HttpGet]
-        public bool getSavedContentPropertyValue(int contentId, string propertyAlias, string propertyValue)
+        [System.Web.Http.HttpPost]
+        public string saveContentPropertyValue([FromBody] string paramValues) // int contentId, string propertyAlias, [FromBody] string propertyValue)
         {
-            var result = false;
+            string result = "Unexpected error.";
+
+            // Initializations
+            dynamic paramObject = null;
+
+            // Check whether parameters have a value
+            if (paramValues == null)
+            {
+                result = "Parameters are null.";
+                return result;
+            }
+
+            // Parse parameters
+            paramObject = JObject.Parse(paramValues);
+            if (paramObject == null)
+            {
+                result = "Parameters are incorrect.";
+                return result;
+            }
+
+            // Get the values of the parameters
+            int contentId = int.MinValue;
+            string propertyAlias = string.Empty;
+            string propertyValue = string.Empty;
+            try
+            {
+                contentId = paramObject.contentId;
+                propertyAlias = paramObject.propertyAlias;
+                propertyValue = paramObject.propertyValue;
+            }
+            catch (Exception ex)
+            {
+                result = string.Format("Error getting the parameters value: {0}", ex.Message);
+                return result;
+            }
+
             var content = ApplicationContext.Current.Services.ContentService.GetById(contentId);
             if (content != null)
             {
@@ -60,7 +99,7 @@ namespace uCKEditor.Controllers.Api
                         ApplicationContext.Services.ContentService.SaveAndPublishWithStatus(content);
                     else
                         ApplicationContext.Services.ContentService.Save(content);
-                    result = true;
+                    result = string.Empty;
                 }
             }
             return result;

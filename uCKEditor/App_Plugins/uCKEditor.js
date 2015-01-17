@@ -274,7 +274,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
         var contentId = $('#' + editorTextAreaId).attr('data-contentId');
         var contentPropertyAlias = $('#' + editorTextAreaId).attr('data-contentPropertyAlias');
         // Save editor's value 
-        getSavedContentPropertyValue(contentId, contentPropertyAlias, editor.getData());
+        saveContentPropertyValue(contentId, contentPropertyAlias, editor.getData());
     });
 
     return editor;
@@ -311,16 +311,16 @@ function createEditor(editorPlaceholderId, editorSettings) {
 //};
 
 
-function getSavedContentPropertyValue(contentId, propertyAlias, propertyValue) {
+function saveContentPropertyValue(contentId, propertyAlias, propertyValue) {
 
     $.ajax({
-        url: "/umbraco/backoffice/uCKEditor/uCKEditorApi/getSavedContentPropertyValue",
-        data: {
+        url: "/umbraco/backoffice/uCKEditor/uCKEditorApi/saveContentPropertyValue",
+        data: JSON.stringify(JSON.stringify({
             contentId: contentId,
             propertyAlias: propertyAlias,
             propertyValue: propertyValue
-        },
-        type: "GET",
+        })),
+        type: "POST",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (result, status, xhr) {
