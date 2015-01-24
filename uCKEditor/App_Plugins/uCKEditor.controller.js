@@ -1,19 +1,21 @@
 ﻿angular.module("umbraco")
 .controller("uCKEditor.uCKEditorController",
-function ($scope, assetsService, dialogService, $log) {
+function ($scope, $q, assetsService, dialogService, $log, $timeout) {
 
     // Check whether the property editor's label should be hidden
     if ($scope.model.config.hideLabel == 1) {
         $scope.model.hideLabel = true;
     }
 
-    // Tell the assetsService to load files required for the editor
-    assetsService
-    .loadJs([
-        '/App_Plugins/uCKEditor/CKEditor/ckeditor.js',
-    ])
-        .then(function () {
+    var await = [];
 
+    // Check whether CKEditor is already loaded before loading it
+    if (typeof CKEDITOR === "undefined") { // Don't reload ckEditor if it is already loaded
+        await.push(assetsService.loadJs('/App_Plugins/uCKEditor/CKEditor/ckeditor.js', $scope));
+    }
+
+    // Wait for queue to end
+    $q.all(await).then(function () {
             // Textaread ID used by the editor
             var editorTextAreaId = 'editorPlaceholder';
 
@@ -180,6 +182,14 @@ function ($scope, assetsService, dialogService, $log) {
             // Set editor's value (when loading)
             editor.setData($scope.model.value);
 
+        // Detects changes in the editor and updates the model
+        editor.on('change', function () {
+            $scope.model.value = editor.getData();
+            setTimeout(function () {
+                $scope.$apply();
+            }, 0);
+        });
+
             // Save editor's value (when submitting)
             $scope.$on("formSubmitting", function (ev, args) {
                 $scope.model.value = editor.getData();
@@ -187,7 +197,10 @@ function ($scope, assetsService, dialogService, $log) {
 
             // Hook the destroy event in order to destroy the CKEditor instances
             $scope.$on("$destroy", function () {
-                // Destroy all CKEditors
+            try {
+                // Check wheter uCKeditor is inside an Archetype property in order to not destroy the instance
+            if (!($scope && $scope.$parent && $scope.$parent.archetypeConfig)) {
+                    // Destroy All CKEditors
                 for (var instanceName in CKEDITOR.instances) {
                     var instanceEditor = CKEDITOR.instances[instanceName];
                     if (instanceEditor) {
@@ -195,6 +208,14 @@ function ($scope, assetsService, dialogService, $log) {
                         instanceEditor = null;
                     }
                 }
+                }
+                // If the editor still exists (which is the case for the editors inside an Archetype property) then try to destroy it
+                if (editor) {
+                    editor.destroy(false);
+                }
+            }
+            catch (err) {
+            }
             });
         });
 });
