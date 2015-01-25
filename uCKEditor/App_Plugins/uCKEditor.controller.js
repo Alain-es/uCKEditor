@@ -19,6 +19,9 @@ function ($scope, $q, assetsService, dialogService, $log, $timeout) {
             // Textaread ID used by the editor
             var editorTextAreaId = 'editorPlaceholder';
 
+        // Sleep 2 milliseconds in order to ensure different Ids
+        sleep(2);
+
             // Assign a UniqueId for the textarea (in case there is more than one editor in the same form)
             var date = new Date();
             var uniqueID = "" + date.getDate() + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds();
@@ -212,10 +215,22 @@ function ($scope, $q, assetsService, dialogService, $log, $timeout) {
                 // If the editor still exists (which is the case for the editors inside an Archetype property) then try to destroy it
                 if (editor) {
                     editor.destroy(false);
+                    editor = null;
                 }
             }
             catch (err) {
             }
             });
         });
+
+
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds) {
+                break;
+            }
+        }
+    }
+
 });
