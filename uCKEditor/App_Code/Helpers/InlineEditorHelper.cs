@@ -5,6 +5,7 @@ using System.Web;
 
 using umbraco;
 using Umbraco.Core;
+using Umbraco.Core.Logging;
 using Umbraco.Web;
 using Umbraco.Web.WebApi;
 using umbraco.BusinessLogic;
@@ -19,10 +20,26 @@ namespace uCKEditor
 
         public static string InlineEditorCreate(string htmlEditorContainerId, string contentPropertyAlias)
         {
-            return InlineEditorCreate(htmlEditorContainerId, contentPropertyAlias, null);
+            return InlineEditorCreate(htmlEditorContainerId, contentPropertyAlias, int.MinValue);
         }
 
         public static string InlineEditorCreate(string htmlEditorContainerId, string contentPropertyAlias, string DatatypeAlias)
+        {
+            string result = string.Empty;
+            var dataTypeDefinitions = ApplicationContext.Current.Services.DataTypeService.GetAllDataTypeDefinitions().Where(dt => dt.Name == DatatypeAlias);
+            if (dataTypeDefinitions.Any())
+            {
+                int dataTypeDefinitionId = dataTypeDefinitions.FirstOrDefault().Id;
+                result = InlineEditorCreate(htmlEditorContainerId, contentPropertyAlias, dataTypeDefinitionId);
+            }
+            else
+            {
+                result = InlineEditorCreate(htmlEditorContainerId, contentPropertyAlias, int.MinValue);
+            }
+            return result;
+        }
+
+        public static string InlineEditorCreate(string htmlEditorContainerId, string contentPropertyAlias, int dataTypeDefinitionId)
         {
             var result = string.Empty;
             try
@@ -40,17 +57,20 @@ namespace uCKEditor
                         {
                             // Check whether the Property Datatype alias is provided when invoking this method
                             // If it is not the case then retrieve the Datatype alias from the content's property
-                            if (DatatypeAlias == null || string.IsNullOrWhiteSpace(DatatypeAlias))
+                            if (dataTypeDefinitionId == int.MinValue)
                             {
-                                DatatypeAlias = content.Properties[contentPropertyAlias].Alias;
+                                var datatypeAlias = content.Properties[contentPropertyAlias].Alias;
+                                var propertyDataTypes = content.PropertyTypes.Where(p => p.Alias == datatypeAlias);
+                                if (propertyDataTypes.Any())
+                                {
+                                    dataTypeDefinitionId = propertyDataTypes.FirstOrDefault().DataTypeDefinitionId;
+                                }
                             }
 
-                            // Get the property data type settings
-                            var propertyDataType = content.PropertyTypes.Where(p => p.Alias == DatatypeAlias).FirstOrDefault();
-                            if (propertyDataType != null)
+                            if (dataTypeDefinitionId != int.MinValue)
                             {
                                 // Get the property prevalues in order to setup CKEditor
-                                var datatypePrevalues = ApplicationContext.Current.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(propertyDataType.DataTypeDefinitionId).PreValuesAsDictionary;
+                                var datatypePrevalues = ApplicationContext.Current.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(dataTypeDefinitionId).PreValuesAsDictionary;
 
                                 // Javascript statements to setup CKEditor
                                 var script = new System.Text.StringBuilder();
@@ -121,8 +141,9 @@ namespace uCKEditor
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(typeof(InlineEditorHelper), string.Format("Error creating the inline editor for the property: {0}", contentPropertyAlias), ex);
             }
             return result;
         }
@@ -151,7 +172,7 @@ namespace uCKEditor
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/jquery/jquery.cookie.js'></script> ");
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/CKEditor/ckeditor.js'></script> ");
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/uCKEditor.js'></script> ");
-                
+
                 result.Append(@"<script type='text/javascript'> 
 
                                     // Load dinamically CSS stylesheet
