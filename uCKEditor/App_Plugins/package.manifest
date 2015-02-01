@@ -151,6 +151,7 @@
 		'~/App_Plugins/uCKEditor/uCKEditor.resource.js',
 		'~/App_Plugins/uCKEditor/uCKEditor.controller.js',
 		'~/App_Plugins/uCKEditor/Dashboard/uCKEditor.dashboard.controller.js', 
+		'~/App_Plugins/uCKEditor/UniqueId/uniqueidcontroller.js'
     ],
 
     css: [
