@@ -56,6 +56,7 @@ namespace uCKEditor.Helpers
 
         public static object GetArchetypePropertyValue(IContent content, string propertyAlias)
         {
+            // TODO: Support deeper levels in the archetype hierarchy. For the moment only properties at the first level are permitted.
             object result = null;
             if (content != null)
             {
@@ -84,31 +85,40 @@ namespace uCKEditor.Helpers
             return result;
         }
 
-        public static string GetArchetypePropertyDatatypeAlias(IContent content, string propertyAlias)
+        public static int GetArchetypePropertyDatatypeId(IContent content, string propertyAlias)
         {
-            string result = string.Empty;
-
+            // TODO: Support deeper levels in the archetype hierarchy. For the moment only properties at the first level are permitted.
+            int result = int.MinValue;
             if (content != null)
             {
                 var fieldsetInfo = ExtractPropertyInfo(propertyAlias);
                 if (fieldsetInfo.Count > 0)
                 {
-                    var property = content.Properties.Where(p => p.Alias == fieldsetInfo[0].FieldsetName).FirstOrDefault();
-                    if (property != null)
+                    var contentType = UmbracoContext.Current.Application.Services.ContentTypeService.GetContentType(content.ContentTypeId);
+                    if (contentType != null)
                     {
-                        // Get archetype model
-                        var archetypeModel = JsonConvert.DeserializeObject<ArchetypeModel>(property.Value.ToString());
-                        if (archetypeModel != null)
+                        var propertyTypes = contentType.PropertyTypes.Where(p => p.Alias == fieldsetInfo[0].FieldsetName);
+                        if (propertyTypes.Count() > 0)
                         {
-                            foreach (var fieldset in archetypeModel.Fieldsets)
+                            var propertyEditorAlias = propertyTypes.FirstOrDefault().PropertyEditorAlias;
+                            var dataTypeDefinition = UmbracoContext.Current.Application.Services.DataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(propertyEditorAlias);
+                            if (dataTypeDefinition.Count() > 0)
                             {
-                                if (fieldset.Properties.Where(p => p.Alias == fieldsetInfo[0].IdPropertyName && p.Value.ToString() == fieldsetInfo[0].IdPropertyValue).Any())
+                                var prevalues = UmbracoContext.Current.Application.Services.DataTypeService.GetPreValuesByDataTypeId(dataTypeDefinition.FirstOrDefault().Id);
+                                if (prevalues.Count() > 0)
                                 {
-                                    var archetypeProperty = fieldset.Properties.Where(p => p.Alias == fieldsetInfo[1].FieldsetName);
-                                    if (archetypeProperty.Any())
+                                    var archetypeDefinition = JsonConvert.DeserializeObject<ArchetypePreValue>(prevalues.FirstOrDefault());
+                                    if (archetypeDefinition != null)
                                     {
-                                        result = archetypeProperty.FirstOrDefault().PropertyEditorAlias;
-                                        break;
+                                        var archetypePropertyDefinition = archetypeDefinition.Fieldsets.First().Properties.First(p => p.Alias == fieldsetInfo[1].FieldsetName);
+                                        if (archetypePropertyDefinition != null)
+                                        {
+                                            var archetypePropertyDataType = UmbracoContext.Current.Application.Services.DataTypeService.GetDataTypeDefinitionById(archetypePropertyDefinition.DataTypeGuid);
+                                            if (archetypePropertyDataType != null)
+                                            {
+                                                result = archetypePropertyDataType.Id;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -122,16 +132,15 @@ namespace uCKEditor.Helpers
 
         public static IContent SetArchetypePropertyValue(IContent content, string propertyAlias, object value)
         {
-
+            // TODO: Support deeper levels in the archetype hierarchy. For the moment only properties at the first level are permitted.
             IContent result = content;
-
             if (content != null)
             {
                 var fieldsetInfo = ExtractPropertyInfo(propertyAlias);
                 if (fieldsetInfo.Count > 0)
                 {
                     var property = content.Properties.Where(p => p.Alias == fieldsetInfo[0].FieldsetName).FirstOrDefault();
-                    if (property != null)
+                    if (property != null && property.Value != null)
                     {
                         // Get archetype model
                         var archetypeModel = JsonConvert.DeserializeObject<ArchetypeModel>(property.Value.ToString());

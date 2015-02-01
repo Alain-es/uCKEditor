@@ -26,7 +26,7 @@ namespace uCKEditor
         public static string InlineEditorCreate(string htmlEditorContainerId, string contentPropertyAlias, string DatatypeAlias)
         {
             string result = string.Empty;
-            var dataTypeDefinitions = ApplicationContext.Current.Services.DataTypeService.GetAllDataTypeDefinitions().Where(dt => dt.Name == DatatypeAlias);
+            var dataTypeDefinitions = ApplicationContext.Current.Services.DataTypeService.GetAllDataTypeDefinitions().Where(dt => dt.Name.InvariantEquals(DatatypeAlias));
             if (dataTypeDefinitions.Any())
             {
                 int dataTypeDefinitionId = dataTypeDefinitions.FirstOrDefault().Id;
@@ -62,12 +62,7 @@ namespace uCKEditor
                                 // Check whether the property alias contains dots. If the property alias contains any dot then it means that the property is inside an archetype property (since dots are forbidden in Umbraco content property aliases)
                                 if (contentPropertyAlias.Contains("."))
                                 {
-                                    var datatypeAlias = ArchetypeHelper.GetArchetypePropertyDatatypeAlias(content, contentPropertyAlias);
-                                    var dataTypeDefinitions = ApplicationContext.Current.Services.DataTypeService.GetAllDataTypeDefinitions().Where(dt => dt.PropertyEditorAlias == datatypeAlias);
-                                    if (dataTypeDefinitions.Any())
-                                    {
-                                        dataTypeDefinitionId = dataTypeDefinitions.FirstOrDefault().Id;
-                                    }
+                                    dataTypeDefinitionId = ArchetypeHelper.GetArchetypePropertyDatatypeId(content, contentPropertyAlias);
                                 }
                                 else
                                 {
