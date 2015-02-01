@@ -27,6 +27,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
+using uCKEditor.Helpers;
+
 namespace uCKEditor.Controllers.Api
 {
     [PluginController("uCKEditor")]
@@ -91,16 +93,24 @@ namespace uCKEditor.Controllers.Api
             var content = ApplicationContext.Current.Services.ContentService.GetById(contentId);
             if (content != null)
             {
-                var property = content.Properties.Where(p => p.Alias == propertyAlias).FirstOrDefault();
-                if (property != null)
+                // Check whether the property alias contains dots. If the property alias contains any dot then it means that the property is inside an archetype property (since dots are forbidden in Umbraco content property aliases)
+                if (propertyAlias.Contains("."))
                 {
-                    property.Value = propertyValue;
-                    if(content.Published)
-                        ApplicationContext.Services.ContentService.SaveAndPublishWithStatus(content);
-                    else
-                        ApplicationContext.Services.ContentService.Save(content);
-                    result = string.Empty;
+                    content = ArchetypeHelper.SetArchetypePropertyValue(content, propertyAlias, propertyValue);
                 }
+                else
+                {
+                    var property = content.Properties.Where(p => p.Alias == propertyAlias).FirstOrDefault();
+                    if (property != null)
+                    {
+                        property.Value = propertyValue;
+                    }
+                }
+                if (content.Published)
+                    ApplicationContext.Services.ContentService.SaveAndPublishWithStatus(content);
+                else
+                    ApplicationContext.Services.ContentService.Save(content);
+                result = string.Empty;
             }
             return result;
         }

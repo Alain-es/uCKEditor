@@ -55,15 +55,28 @@ namespace uCKEditor
                         var content = ApplicationContext.Current.Services.ContentService.GetById(umbracoHelper.AssignedContentItem.Id);
                         if (content != null)
                         {
-                            // Check whether the Property Datatype alias is provided when invoking this method
-                            // If it is not the case then retrieve the Datatype alias from the content's property
+                            // Check whether the Property Datatype id is provided when invoking this method
+                            // If it is not the case then retrieve the Datatype id from the content's property
                             if (dataTypeDefinitionId == int.MinValue)
                             {
-                                var datatypeAlias = content.Properties[contentPropertyAlias].Alias;
-                                var propertyDataTypes = content.PropertyTypes.Where(p => p.Alias == datatypeAlias);
-                                if (propertyDataTypes.Any())
+                                // Check whether the property alias contains dots. If the property alias contains any dot then it means that the property is inside an archetype property (since dots are forbidden in Umbraco content property aliases)
+                                if (contentPropertyAlias.Contains("."))
                                 {
-                                    dataTypeDefinitionId = propertyDataTypes.FirstOrDefault().DataTypeDefinitionId;
+                                    var datatypeAlias = ArchetypeHelper.GetArchetypePropertyDatatypeAlias(content, contentPropertyAlias);
+                                    var dataTypeDefinitions = ApplicationContext.Current.Services.DataTypeService.GetAllDataTypeDefinitions().Where(dt => dt.PropertyEditorAlias == datatypeAlias);
+                                    if (dataTypeDefinitions.Any())
+                                    {
+                                        dataTypeDefinitionId = dataTypeDefinitions.FirstOrDefault().Id;
+                                    }
+                                }
+                                else
+                                {
+                                    var datatypeAlias = content.Properties[contentPropertyAlias].Alias;
+                                    var propertyDataTypes = content.PropertyTypes.Where(p => p.Alias == datatypeAlias);
+                                    if (propertyDataTypes.Any())
+                                    {
+                                        dataTypeDefinitionId = propertyDataTypes.FirstOrDefault().DataTypeDefinitionId;
+                                    }
                                 }
                             }
 
