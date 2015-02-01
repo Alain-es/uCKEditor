@@ -115,6 +115,30 @@ namespace uCKEditor.Controllers.Api
             return result;
         }
 
+        [System.Web.Http.HttpGet]
+        public string getUniqueId(string uniqueIdType)
+        {
+            string result = string.Empty;
+            switch (uniqueIdType.Trim().ToLower())
+            {
+                case "guidnodashes":
+                    result = Guid.NewGuid().ToString().Replace("-", string.Empty);
+                    break;
+                case "hashcodefromguid":
+                    result = Guid.NewGuid().ToString().GetHashCode().ToString().Replace("-", "1");
+                    break;
+                case "datetime":
+                    var random = new Random(DateTime.Now.Millisecond);
+                    System.Threading.Thread.Sleep(random.Next(10));
+                    result = string.Format("{0:yyyyMMddHHmmssfffffff}", DateTime.Now);
+                    break;
+                default:
+                    result = Guid.NewGuid().ToString();
+                    break;
+            }
+            return result;
+        }
+
     }
 }
 

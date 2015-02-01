@@ -122,6 +122,28 @@
 				extraPlugins: "",
 				removePlugins: ""
 			}
+		},
+        {
+			alias: 'uCKEditor.UniqueId',
+			name: 'Unique ID generator',
+			editor:{
+				valueType: "JSON",
+				view: '~/App_Plugins/uCKEditor/UniqueId/uniqueid.html',
+				hideLabel: false
+			},
+			prevalues : {
+				fields: [
+					{
+					    label: "ID Type",
+					    description: "Available types: Guid, GuidNoDashes, HashcodeFromGuid or Datetime",
+					    key: "uniqueIdType",
+						view: "textstring"
+					}
+				]
+			},
+			defaultConfig: {
+				type: "Guid"
+			}
 		}
 	],
 

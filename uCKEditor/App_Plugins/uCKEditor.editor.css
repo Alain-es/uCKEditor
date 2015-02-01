@@ -48,3 +48,7 @@ iframe#umbracoBackofficeIframe {
     transform: translateY(-50%);
     text-align: center;
 }
+
+.uckeditor-loading {
+    color: grey;
+}
