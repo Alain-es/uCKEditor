@@ -20,7 +20,7 @@
   <info>
     <package>
       <name>uCKEditor</name>
-      <version>1.0</version>
+      <version>1.0.1</version>
       <license url="http://opensource.org/licenses/MIT">MIT License</license>
       <url>http://our.umbraco.org/projects/backoffice-extensions/uckeditor</url>
       <requirements>
@@ -33,7 +33,13 @@
       <name>Alain</name>
       <website>https://github.com/Alain-es/uCKEditor</website>
     </author>
-    <readme><![CDATA[uCKEditor requires Umbraco v7.1.4 or above]]></readme>
+    <readme>
+      <![CDATA[uCKEditor requires Umbraco v7.1.4 or above.
+      
+      IMPORTANT: If you see a warning message that says "This package references the assembly 'Archetype' which was not found", just IGNORE it. It is NOT mandatory to install to install Archetype. uCKEditor will work properly without it.
+      This message appears because uCKEditor references the Archetype library to allow you to use uCKEditor as a property editor with an Archetype data type.
+      ]]>
+    </readme>
   </info>
   <DocumentTypes />
   <Templates />
