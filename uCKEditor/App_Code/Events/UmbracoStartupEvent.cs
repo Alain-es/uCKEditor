@@ -36,8 +36,8 @@ namespace uCKEditor.Events
                 ApplicationContext.Current.Services.UserService.Save(user);
             }
 
-            // Register routes for embedded files
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            //// Register routes for embedded files
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
     }
 }

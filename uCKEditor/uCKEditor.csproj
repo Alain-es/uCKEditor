@@ -209,7 +209,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_Plugins\**\*.*" />
+    <Content Include="App_Plugins\**\*.*" />
     <Content Include="App_Code\Installer\Setup.ascx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -253,7 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_Plugins\UniqueId\" />
     <Folder Include="Models\" />
     <Folder Include="Views\" />
   </ItemGroup>
