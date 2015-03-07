@@ -101,10 +101,11 @@ namespace uCKEditor.Helpers
                         if (propertyTypes.Count() > 0)
                         {
                             var propertyEditorAlias = propertyTypes.FirstOrDefault().PropertyEditorAlias;
+                            var propertyEditorDataTypeDefinitionId = propertyTypes.FirstOrDefault().DataTypeDefinitionId;
                             var dataTypeDefinition = UmbracoContext.Current.Application.Services.DataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(propertyEditorAlias);
                             if (dataTypeDefinition.Count() > 0)
                             {
-                                var prevalues = UmbracoContext.Current.Application.Services.DataTypeService.GetPreValuesByDataTypeId(dataTypeDefinition.FirstOrDefault().Id);
+                                var prevalues = UmbracoContext.Current.Application.Services.DataTypeService.GetPreValuesByDataTypeId(propertyEditorDataTypeDefinitionId);
                                 if (prevalues.Count() > 0)
                                 {
                                     var archetypeDefinition = JsonConvert.DeserializeObject<ArchetypePreValue>(prevalues.FirstOrDefault());

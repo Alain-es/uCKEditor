@@ -80,6 +80,9 @@ function ($scope, $q, assetsService, dialogService, $log, $timeout) {
                 if ($scope.model.config.removePlugins != null && jQuery.trim($scope.model.config.removePlugins) != '') {
                     CKEDITOR.config.removePlugins = $scope.model.config.removePlugins;
                 }
+                if ($scope.model.config.stylesSet != null && jQuery.trim($scope.model.config.stylesSet) != '') {
+                    CKEDITOR.config.stylesSet = $scope.model.config.stylesSet;
+                }
                 editor = CKEDITOR.replace(editorTextAreaId, CKEDITOR.config);
             }
 

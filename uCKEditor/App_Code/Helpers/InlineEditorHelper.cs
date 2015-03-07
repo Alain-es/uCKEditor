@@ -101,7 +101,8 @@ namespace uCKEditor
                                                         toolbarGroups: ""{13}"",
                                                         removeButtons: ""{14}"", 
                                                         extraPlugins: ""{15}"", 
-                                                        removePlugins: ""{16}""
+                                                        removePlugins: ""{16}"",
+                                                        stylesSet: ""{17}""
                                                     }}; 
 
                                                     // Create inline editor
@@ -141,7 +142,8 @@ namespace uCKEditor
                                                 processPreValue(datatypePrevalues, "toolbarGroups"),
                                                 processPreValue(datatypePrevalues, "removeButtons"),
                                                 processPreValue(datatypePrevalues, "extraPlugins"),
-                                                processPreValue(datatypePrevalues, "removePlugins")
+                                                processPreValue(datatypePrevalues, "removePlugins"),
+                                                processPreValue(datatypePrevalues, "stylesSet")
                                 );
                                 result = script.ToString();
                             }
@@ -156,7 +158,22 @@ namespace uCKEditor
             return result;
         }
 
-        public static string InlineEditorInitialize(bool loadJquery = true, bool loadJqueryUI = true)
+        public static string InlineEditorInjectHtmlCode(string htmlCode)
+        {
+            var result = new System.Text.StringBuilder();
+
+            // Check whether the current user has permissions to edit the current node
+            if (HasCurrentUserPermissionsToEditCurrentContentNode())
+            {
+                if (!string.IsNullOrWhiteSpace(htmlCode))
+                {
+                    result.Append(htmlCode);
+                }
+            }
+            return result.ToString();
+        }
+
+        public static string InlineEditorInjectScripts(bool injectJqueryScripts = true, bool injectJqueryUIScripts = true, bool injectJqueryCookieScripts = true, bool injectCkeditorScripts = true)
         {
             var result = new System.Text.StringBuilder();
 
@@ -164,22 +181,43 @@ namespace uCKEditor
             if (HasCurrentUserPermissionsToEditCurrentContentNode())
             {
                 // Check wheter JQuery should be loaded or not
-                if (loadJquery)
+                if (injectJqueryScripts)
                 {
                     result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/jquery/jquery-1.11.1.min.js'></script> ");
                 }
 
                 // Check wheter JQueryUI should be loaded or not
-                if (loadJqueryUI)
+                if (injectJqueryUIScripts)
                 {
                     result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/jquery/jquery-ui-1.11.2.min.js'></script> ");
                     result.Append(@" <link rel='stylesheet' href='/App_Plugins/uCKEditor/jquery/jquery-ui-1.11.2-theme-smoothness.css'> ");
                 }
 
-                // Editor's scripts
+                // JQueryCookies scripts
+                if (injectJqueryCookieScripts)
+                {
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/jquery/jquery.cookie.js'></script> ");
+                }
+
+                // CKEditor's scripts
+                if (injectCkeditorScripts)
+                {
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/CKEditor/ckeditor.js'></script> ");
                 result.Append(@" <script type='text/javascript' src='/App_Plugins/uCKEditor/uCKEditor.js'></script> ");
+                }
+            }
+            return result.ToString();
+        }
+
+
+        public static string InlineEditorInitialize(bool injectJqueryScripts = true, bool injectJqueryUIScripts = true, bool injectJqueryCookieScripts = true, bool injectCkeditorScripts = true)
+        {
+            var result = new System.Text.StringBuilder();
+
+            // Check whether the current user has permissions to edit the current node
+            if (HasCurrentUserPermissionsToEditCurrentContentNode())
+            {
+                result.Append(InlineEditorInjectScripts(injectJqueryScripts, injectJqueryUIScripts, injectJqueryCookieScripts, injectCkeditorScripts));
 
                 result.Append(@"<script type='text/javascript'> 
 

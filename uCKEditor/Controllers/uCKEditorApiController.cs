@@ -55,6 +55,10 @@ namespace uCKEditor.Controllers.Api
         public string saveContentPropertyValue([FromBody] string paramValues) // int contentId, string propertyAlias, [FromBody] string propertyValue)
         {
             string result = "Unexpected error.";
+            bool errorAddedToLog = false;
+
+            try
+            {
 
             // Initializations
             dynamic paramObject = null;
@@ -75,21 +79,15 @@ namespace uCKEditor.Controllers.Api
             }
 
             // Get the values of the parameters
+                result = "Error getting the parameters value";
             int contentId = int.MinValue;
             string propertyAlias = string.Empty;
             string propertyValue = string.Empty;
-            try
-            {
                 contentId = paramObject.contentId;
                 propertyAlias = paramObject.propertyAlias;
                 propertyValue = paramObject.propertyValue;
-            }
-            catch (Exception ex)
-            {
-                result = string.Format("Error getting the parameters value: {0}", ex.Message);
-                return result;
-            }
 
+                result = "Error saving property value.";
             var content = ApplicationContext.Current.Services.ContentService.GetById(contentId);
             if (content != null)
             {
@@ -112,6 +110,25 @@ namespace uCKEditor.Controllers.Api
                     ApplicationContext.Services.ContentService.Save(content);
                 result = string.Empty;
             }
+            }
+
+            catch (Exception ex)
+            {
+                LogHelper.Error<uCKEditorApiController>(result, ex);
+                errorAddedToLog = true;
+                result = string.Format("{1}: {0}", result, ex.Message);
+                return result;
+            }
+
+            finally
+            {
+                // If there is an error add it to the log file
+                if (!errorAddedToLog && !string.IsNullOrWhiteSpace(result))
+                {
+                    LogHelper.Error<uCKEditorApiController>(result, null);
+                }
+            }
+
             return result;
         }
 

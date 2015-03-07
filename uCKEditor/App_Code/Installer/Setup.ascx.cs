@@ -65,6 +65,8 @@ namespace uCKEditor.Installer
                     dataTypePreValues.Add("extraPlugins", new PreValue(14, ""));
                     // PreValue Id="15" Alias="removePlugins" 
                     dataTypePreValues.Add("removePlugins", new PreValue(15, ""));
+                    // PreValue Id="16" Alias="stylesSet" 
+                    dataTypePreValues.Add("stylesSet", new PreValue(16, ""));
 
                     // Save changes
                     ApplicationContext.Current.Services.DataTypeService.SaveDataTypeAndPreValues(dataTypeDefinition, dataTypePreValues, 0);

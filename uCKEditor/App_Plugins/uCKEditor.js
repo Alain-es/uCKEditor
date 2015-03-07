@@ -14,7 +14,8 @@
             toolbarGroups: "",
             removeButtons: "",
             extraPlugins: "",
-            removePlugins: ""
+            removePlugins: "",
+            stylesSet: ""
         } 
 */
 
@@ -83,6 +84,9 @@ function createEditor(editorPlaceholderId, editorSettings) {
         }
         if (editorSettings.removePlugins != null && jQuery.trim(editorSettings.removePlugins) != '') {
             CKEDITOR.config.removePlugins = editorSettings.removePlugins;
+        }
+        if (editorSettings.stylesSet != null && jQuery.trim(editorSettings.stylesSet) != '') {
+            CKEDITOR.config.stylesSet = editorSettings.stylesSet;
         }
         editor = CKEDITOR.inline(editorTextAreaId, CKEDITOR.config);
     }

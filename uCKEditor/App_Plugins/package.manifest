@@ -102,7 +102,12 @@
 					   key: "removePlugins",
 					   view: "textarea"
 					},
-
+					{
+					   label: "StylesSet",
+					   description: "Leave empty to use CKEditor default values.",
+					   key: "stylesSet",
+					   view: "textarea"
+					}
 				]
 			},
 			defaultConfig: {
@@ -120,7 +125,8 @@
 				toolbarGroups: "",
 				removeButtons: "",
 				extraPlugins: "",
-				removePlugins: ""
+				removePlugins: "",
+				stylesSet: ""
 			}
 		},
         {
