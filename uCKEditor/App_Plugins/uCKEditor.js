@@ -38,9 +38,9 @@ function createEditor(editorPlaceholderId, editorSettings) {
 
     // Loads plugin (UmbracoMedia, UmbracoEmbed, ...)
     if (CKEDITOR.config.plugins != null && CKEDITOR.config.plugins != 'undefined' && jQuery.trim(CKEDITOR.config.plugins) != '')
-        CKEDITOR.config.plugins += ',umbracomedia,umbracoembed,umbracosave'; /*umbracomediatagging*/
+        CKEDITOR.config.plugins += ',umbracomedia,umbracoembed,umbracosave'; /*umbracomediatagger*/
     else
-        CKEDITOR.config.plugins = 'umbracomedia,umbracoembed,umbracosave'; /*umbracomediatagging*/
+        CKEDITOR.config.plugins = 'umbracomedia,umbracoembed,umbracosave'; /*umbracomediatagger*/
 
     if (editorSettings.customConfigurationFile != null && jQuery.trim(editorSettings.customConfigurationFile) != '') {
         // Create the editor using the custom configuration file
@@ -71,7 +71,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
             CKEDITOR.config.extraAllowedContent = editorSettings.extraAllowedContent;
         }
         if (editorSettings.toolbar != null && jQuery.trim(editorSettings.toolbar) != '') {
-            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia','umbracoembed'], " + editorSettings.toolbar + ",]"); /*'umbracomediatagging'*/
+            CKEDITOR.config.toolbar = eval("[['umbracosave','umbracomedia','umbracoembed'], " + editorSettings.toolbar + ",]"); /*'umbracomediatagger'*/
         }
         if (editorSettings.toolbarGroups != null && jQuery.trim(editorSettings.toolbarGroups) != '') {
             CKEDITOR.config.toolbarGroups = eval("[{name: 'umbraco', groups: ['umbraco']}, " + editorSettings.toolbarGroups + ",]");
@@ -116,12 +116,12 @@ function createEditor(editorPlaceholderId, editorSettings) {
         umbracoBackofficeDialog('embed', 'Embed');
     });
 
-    // Get UmbracoMediaTagging plugin's button IDs
-    var editorButtonMediaTaggingIdSelector = '#' + editorId + ' .cke_button__umbracomediatagging';
+    // Get UmbracoMediaTagger plugin's button IDs
+    var editorButtonMediaTaggerIdSelector = '#' + editorId + ' .cke_button__umbracomediatagger';
 
-    // Hook the click event for the UmbracoMediaTagging plugin's button
-    $(document).on('click', editorButtonMediaTaggingIdSelector, function () {
-        umbracoBackofficeDialog('mediatagging', 'Media');
+    // Hook the click event for the UmbracoMediaTagger plugin's button
+    $(document).on('click', editorButtonMediaTaggerIdSelector, function () {
+        umbracoBackofficeDialog('mediatagger', 'Media');
     });
 
 
@@ -190,8 +190,8 @@ function createEditor(editorPlaceholderId, editorSettings) {
                             case 'embed':
                                 scope.openDialogEmbed();
                                 break;
-                            case 'mediatagging':
-                                scope.openDialogMediaTaggingPicker();
+                            case 'mediatagger':
+                                scope.openDialogMediaTaggerPicker();
                                 break;
                             default:
                         }
@@ -241,13 +241,13 @@ function createEditor(editorPlaceholderId, editorSettings) {
                             editor.insertElement(embedElement);
                         };
                         break;
-                    case 'mediatagging':
+                    case 'mediatagger':
                         // Check whether an image has been selected
                         if (event.data) {
                             // Selected image
                             var selectedImage = {
                                 alt: '',
-                                src: (event.data.image) ? event.data.image : '/App_Plugins/uCKEditor/CKEditor/plugins/umbracomediatagging/images/noimage.png',
+                                src: (event.data.image) ? event.data.image : '/App_Plugins/uCKEditor/CKEditor/plugins/umbracomediatagger/images/noimage.png',
                                 rel: event.data.id
                             };
                             // Create an html img tag with the picked image properties to insert into the editor

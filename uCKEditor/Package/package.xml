@@ -1543,27 +1543,27 @@
     </file>
     <file>
       <guid>plugin.js</guid>
-      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagging</orgPath>
+      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagger</orgPath>
       <orgName>plugin.js</orgName>
     </file>
     <file>
-      <guid>umbracomediatagging.png</guid>
-      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagging/icons</orgPath>
-      <orgName>umbracomediatagging.png</orgName>
+      <guid>umbracomediatagger.png</guid>
+      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagger/icons</orgPath>
+      <orgName>umbracomediatagger.png</orgName>
     </file>
     <file>
-      <guid>umbracomediatagging.png</guid>
-      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagging/icons/hidpi</orgPath>
-      <orgName>umbracomediatagging.png</orgName>
+      <guid>umbracomediatagger.png</guid>
+      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagger/icons/hidpi</orgPath>
+      <orgName>umbracomediatagger.png</orgName>
     </file>
     <file>
       <guid>noimage.png</guid>
-      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagging/images</orgPath>
+      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagger/images</orgPath>
       <orgName>noimage.png</orgName>
     </file>
     <file>
       <guid>en.js</guid>
-      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagging/lang</orgPath>
+      <orgPath>/App_Plugins/uDynamic/CKEditor/plugins/umbracomediatagger/lang</orgPath>
       <orgName>en.js</orgName>
     </file>
     <file>

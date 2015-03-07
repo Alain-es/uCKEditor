@@ -1,8 +1,8 @@
-CKEDITOR.plugins.add('umbracomediatagging', {
-    icons: 'umbracomediatagging',
+CKEDITOR.plugins.add('umbracomediatagger', {
+    icons: 'umbracomediatagger',
     hidpi: true,
     init: function (editor) {
-        editor.addCommand('umbracomediatagging', {
+        editor.addCommand('umbracomediatagger', {
             allowedContent: 'img[*]',
             requiredContent: 'img',
             modes: { wysiwyg: 1 },
@@ -10,10 +10,10 @@ CKEDITOR.plugins.add('umbracomediatagging', {
             exec: function (editor) {
             }
         });
-        editor.ui.addButton('umbracomediatagging', {
-            //label: editor.lang.umbracomediatagging.tooltip,
+        editor.ui.addButton('umbracomediatagger', {
+            //label: editor.lang.umbracomediatagger.tooltip,
             label: "Media picker",
-            command: 'umbracomediatagging',
+            command: 'umbracomediatagger',
             toolbar: 'umbraco,2'
         });
     }

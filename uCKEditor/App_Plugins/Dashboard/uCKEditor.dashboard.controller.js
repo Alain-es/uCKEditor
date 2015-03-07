@@ -42,11 +42,11 @@
             $scope.umbracoDialogLoaded = true;
         }
 
-        $scope.openDialogMediaTaggingPicker = function () {
-            // Open Umbraco's media tagging picker dialog
+        $scope.openDialogMediaTaggerPicker = function () {
+            // Open Umbraco's media tagger picker dialog
             dialogService.open({
                 // Dialog
-                template: '/App_Plugins/MediaTagging/Dialog/_dialog.html',
+                template: '/App_Plugins/MediaTagger/Dialog/_dialog.html',
                 show: true,
                 // Dialog Callback
                 callback: function (item) {
