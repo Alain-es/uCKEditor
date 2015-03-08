@@ -60,56 +60,56 @@ namespace uCKEditor.Controllers.Api
             try
             {
 
-            // Initializations
-            dynamic paramObject = null;
+                // Initializations
+                dynamic paramObject = null;
 
-            // Check whether parameters have a value
-            if (paramValues == null)
-            {
-                result = "Parameters are null.";
-                return result;
-            }
+                // Check whether parameters have a value
+                if (paramValues == null)
+                {
+                    result = "Parameters are null.";
+                    return result;
+                }
 
-            // Parse parameters
-            paramObject = JObject.Parse(paramValues);
-            if (paramObject == null)
-            {
-                result = "Parameters are incorrect.";
-                return result;
-            }
+                // Parse parameters
+                paramObject = JObject.Parse(paramValues);
+                if (paramObject == null)
+                {
+                    result = "Parameters are incorrect.";
+                    return result;
+                }
 
-            // Get the values of the parameters
+                // Get the values of the parameters
                 result = "Error getting the parameters value";
-            int contentId = int.MinValue;
-            string propertyAlias = string.Empty;
-            string propertyValue = string.Empty;
+                int contentId = int.MinValue;
+                string propertyAlias = string.Empty;
+                string propertyValue = string.Empty;
                 contentId = paramObject.contentId;
                 propertyAlias = paramObject.propertyAlias;
                 propertyValue = paramObject.propertyValue;
 
                 result = "Error saving property value.";
-            var content = ApplicationContext.Current.Services.ContentService.GetById(contentId);
-            if (content != null)
-            {
-                // Check whether the property alias contains dots. If the property alias contains any dot then it means that the property is inside an archetype property (since dots are forbidden in Umbraco content property aliases)
-                if (propertyAlias.Contains("."))
+                var content = ApplicationContext.Current.Services.ContentService.GetById(contentId);
+                if (content != null)
                 {
-                    content = ArchetypeHelper.SetArchetypePropertyValue(content, propertyAlias, propertyValue);
-                }
-                else
-                {
-                    var property = content.Properties.Where(p => p.Alias == propertyAlias).FirstOrDefault();
-                    if (property != null)
+                    // Check whether the property alias contains dots. If the property alias contains any dot then it means that the property is inside an archetype property (since dots are forbidden in Umbraco content property aliases)
+                    if (propertyAlias.Contains("."))
                     {
-                        property.Value = propertyValue;
+                        content = ArchetypeHelper.SetArchetypePropertyValue(content, propertyAlias, propertyValue);
                     }
+                    else
+                    {
+                        var property = content.Properties.Where(p => p.Alias == propertyAlias).FirstOrDefault();
+                        if (property != null)
+                        {
+                            property.Value = propertyValue;
+                        }
+                    }
+                    if (content.Published)
+                        ApplicationContext.Services.ContentService.SaveAndPublishWithStatus(content);
+                    else
+                        ApplicationContext.Services.ContentService.Save(content);
+                    result = string.Empty;
                 }
-                if (content.Published)
-                    ApplicationContext.Services.ContentService.SaveAndPublishWithStatus(content);
-                else
-                    ApplicationContext.Services.ContentService.Save(content);
-                result = string.Empty;
-            }
             }
 
             catch (Exception ex)

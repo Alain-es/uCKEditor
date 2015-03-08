@@ -236,7 +236,7 @@ function createEditor(editorPlaceholderId, editorSettings) {
                     case 'embed':
                         // Check whether there is an embed object
                         if (event.data) {
-                        // Create an html iframe with the url
+                            // Create an html iframe with the url
                             var embedElement = CKEDITOR.dom.element.createFromHtml(event.data, editor.document);
                             editor.insertElement(embedElement);
                         };

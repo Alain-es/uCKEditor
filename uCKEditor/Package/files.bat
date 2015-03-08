@@ -1,7 +1,8 @@
 @ECHO OFF
+SETLOCAL enabledelayedexpansion
 CLS
 
-SET outputRoot=/App_Plugins/uDynamic
+SET outputRoot=/App_Plugins/uCKEditor
 SET outputFile=%cd%\files.txt
 IF EXIST "%outputFile%" DEL "%outputFile%"
 CD ..
@@ -10,8 +11,11 @@ SET outputRemoveRoot=%cd%
 
 
 REM -- Get all files 
+SET /A COUNT=1
 FOR /R %%f IN (*) DO (
 		CALL :processFile "%%f" "%%~nf" "%%~xf" >> "%outputFile%"
+		SET /A COUNT+=1
+		ECHO !COUNT!
 	)
 GOTO :EOF
 
