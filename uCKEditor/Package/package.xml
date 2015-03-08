@@ -20,7 +20,7 @@
   <info>
     <package>
       <name>uCKEditor</name>
-      <version>1.0.1</version>
+      <version>1.1.0</version>
       <license url="http://opensource.org/licenses/MIT">MIT License</license>
       <url>http://our.umbraco.org/projects/backoffice-extensions/uckeditor</url>
       <requirements>
