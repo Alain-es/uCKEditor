@@ -7,11 +7,6 @@
       <orgName>uCKEditor.dll</orgName>
     </file>
     <file>
-      <guid>Setup.ascx</guid>
-      <orgPath>/App_Plugins/uCKEditor/Installer</orgPath>
-      <orgName>Setup.ascx</orgName>
-    </file>
-    <file>
       <guid>Install.zip</guid>
       <orgPath>/App_Plugins/uCKEditor</orgPath>
       <orgName>Install.zip</orgName>
@@ -53,6 +48,7 @@
     <!--<Action runat="install" alias="deleteFile" deleteFile="~/App_Plugins/uCKEditor/Installer/Installer.ascx" />-->
     <Action runat="install" alias="uninstallFiles" uninstallFiles="~/App_Plugins/uCKEditor/" />
     <Action runat="install" alias="installFiles" installFiles="~/App_Plugins/uCKEditor/Install.zip" />
+    <Action runat="install" alias="uninstallSection" uninstallSection="uCKEditor" />
     <Action runat="install" alias="addDashboardSection" dashboardAlias="uCKEditor">
       <section>
         <areas>
@@ -63,6 +59,7 @@
         </tab>
       </section>
     </Action>
+    <Action runat="uninstall" alias="uninstallSection" uninstallSection="uCKEditor" />
   </Actions>
   <control>/App_Plugins/uCKEditor/Installer/Setup.ascx</control>
 </umbPackage>
